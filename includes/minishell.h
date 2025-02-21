@@ -30,3 +30,9 @@ typedef struct s_data
 
 void ft_free_t_cmd(t_cmd tcmd);
 void free_t_data(t_data *tdata);
+
+
+// EXECUTION
+
+
+// PARSER
