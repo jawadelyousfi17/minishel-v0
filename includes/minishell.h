@@ -23,7 +23,7 @@ typedef struct s_data
     t_redirect_type redirect_output;
     char *infile;
     char *outfile;
-    t_cmd *cmd;
+    char **cmd;
     bool pipe;
     int n_of_cmds;
     t_cmd **pipe_cmd;
@@ -37,3 +37,6 @@ void free_t_data(t_data *tdata);
 
 
 // PARSER
+
+// split a string s by charset ch
+char	**ft_split_parser(char const *s, char *ch);

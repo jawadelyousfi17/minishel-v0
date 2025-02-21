@@ -10,8 +10,8 @@ void print_str(char **s) {
 }
 
 int main() {
-	char *s = ft_strdup("< infile ls | echo \"hello world 'How are you'\" | ls -la | grep \"Hello\" > \"outfile\"");
-	char **splited = ft_split(s, ' ');
+	char *s = ft_strdup("echo \"hellow 'wprld'\"");
+	char **splited = ft_split_parser(s, " '");
 	printf("%s\n", s);
 	print_str(splited);
 }
