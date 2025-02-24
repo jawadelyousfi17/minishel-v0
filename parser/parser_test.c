@@ -10,10 +10,10 @@ void clean_t_cmd(t_cmd cmd) {
 
 t_data *testing_cmd(char *str) {
 	t_data *test_1 = malloc(sizeof(t_data));
-	t_cmd *cmd = malloc(sizeof(t_cmd));
-	cmd->cmd = true;
-	cmd->cmd = NULL;
-	cmd->cmd = ft_split("/bin/ls la", ' ');
+	// t_cmd *cmd = malloc(sizeof(t_cmd));
+	// cmd->cmd = true;
+	// cmd->cmd = NULL;
+	// cmd->cmd = ft_split("/bin/ls la", ' ');
 
 	test_1->redirect_input = REDIRECT;
 	test_1->infile = "infile";
@@ -24,17 +24,18 @@ t_data *testing_cmd(char *str) {
 	
 	test_1->redirect_output = NO;
 	test_1->outfile = NULL;
-	test_1->cmd = cmd;
+	// test_1->cmd = cmd;
+	test_1->cmd = ft_split("/bin/ls la", ' ');
 
 	return test_1;
 }
 
 t_data *testing_pipe_cmd(char *str) {
 	t_data *test_1 = malloc(sizeof(t_data));
-	t_cmd *cmd = malloc(sizeof(t_cmd));
-	cmd->cmd = true;
-	cmd->cmd = NULL;
-	cmd->cmd = ft_split("/bin/ls la", ' ');
+	// t_cmd *cmd = malloc(sizeof(t_cmd));
+	// cmd->cmd = true;
+	// cmd->cmd = NULL;
+	// cmd->cmd = ft_split("/bin/ls la", ' ');
 
 	test_1->redirect_input = REDIRECT;
 	test_1->infile = "infile";
