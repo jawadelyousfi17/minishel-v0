@@ -17,7 +17,6 @@ void	last_process(int fd[2][2], t_data *data, char **env,int i)
 {
 	char	*p;
     
-
 	if (i % 2 == 0)
 		dup_and_close(fd[1][0], 1, fd);
 	else

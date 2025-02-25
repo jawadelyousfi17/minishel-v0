@@ -87,7 +87,7 @@ void exec_one(t_data *data,char **env)
     pid = fork();
     if (pid == 0)
     {
-        redirection(data);
+        // redirection(data);
         cmd_path = process_helper(data);
         if (!cmd_path)
             if_not_found(data);
@@ -105,9 +105,24 @@ void process(t_data *data,char **env)
     else
         exec_one(data,env);
 }
-void signal_handler(int sig)
-{
-    printf("hh\n");
+
+void restore_terminal() {
+    struct termios original;
+    tcgetattr(STDIN_FILENO, &original);
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &original); 
+}
+void signal_handler(int sig) {
+    rl_on_new_line();
+    rl_redisplay();
+}
+
+
+
+void set_terminal_raw() {
+    struct termios raw;
+    tcgetattr(STDIN_FILENO, &raw); 
+    raw.c_lflag &= ~(ECHO | ICANON); 
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw); 
 }
 
 int main(int c ,char **v ,char **env)
@@ -116,10 +131,11 @@ int main(int c ,char **v ,char **env)
     t_data *data;
     char *input;
 
+    set_terminal_raw();
     sig.sa_handler = &signal_handler;
+    sigaction(SIGINT,&sig,NULL);
     while (1)
     {
-        sigaction(SIGINT,&sig,NULL);
         input = readline("minishell> ");
         if (!input) 
         { 
@@ -132,6 +148,7 @@ int main(int c ,char **v ,char **env)
             data = testing_cmd(input);
             process(data,env);
         }
+        free(input);
     }
-    
+    restore_terminal();
 }

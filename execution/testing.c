@@ -1,5 +1,5 @@
 #include "../includes/minishell.h"
-t_files * alloc_files(char *in, char *out,t_redirect_type typein, t_redirect_type typeout)
+t_files * alloc_files(char *in, char *out,e_redirect_type typein, e_redirect_type typeout)
 {
 	t_files *file = malloc(sizeof(t_files));
 	file->in_file = ft_strdup(in);
@@ -50,7 +50,7 @@ t_data *testing_cmd(char *str)
 	test_1->infile = "main.c";
 	test_1->n_of_cmds = 5;
 	test_1->outfile = NULL;
-	test_1->pipe = true;
+	test_1->pipe = false;
 	test_1->pipe_cmd = malloc(4 * sizeof(t_data *));
 	test_1->pipe_cmd[0] = alloc_cmds("ls -la",0);
 	test_1->pipe_cmd[1] = alloc_cmds("grep minishell",1);
