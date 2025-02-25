@@ -56,7 +56,10 @@ void *ft_malloc(size_t size,int flag)
     void *ptr;
 
     if (flag != 0)
+    {
         lst_clear(head);
+        return (NULL);
+    }
     ptr = malloc(size);
     if (!ptr)
     	return (NULL);
@@ -69,27 +72,27 @@ void f()
     system("leaks a.out");
 }
 
-int main()
-{
-    atexit(f);
-    char *str;
+// int main()
+// {
+//     atexit(f);
+//     char *str;
 
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
-    str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
+//     str = ft_malloc(1000,0);
 
-    ft_malloc(0,1);
+//     ft_malloc(0,1);
 
     
     
 
-}
+// }
 //FLAG
