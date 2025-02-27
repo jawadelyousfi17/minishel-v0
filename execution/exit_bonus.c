@@ -1,18 +1,11 @@
 #include "../includes/minishell.h"
 
-void	ft_exit(int exit_code, char *arg)
+void ft_perr(void)
 {
-	if (arg)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putendl_fd(": command not found", 2);
-		free(arg);
-	}
-	else
-		perror("minishell");
-	exit(exit_code);
+	perror("minishell");
+	exit(1);
 }
+
 
 void	close_exit(int exit_status, int fd[2][2], char *arg)
 {
@@ -44,8 +37,6 @@ void	ft_close(int fd[2][2])
 		}
 		i++;
 	}
-	// close(fd[0]);
-	// close(fd[1]);
 }
 
 void	ft_exit_failure_pipe(void)

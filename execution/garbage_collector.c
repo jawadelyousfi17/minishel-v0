@@ -2,6 +2,7 @@
 
 
 
+
 void lst_clear(t_collect *head)
 {
     t_collect *tmp;
@@ -39,10 +40,11 @@ void ptr_add_back(t_collect **head,t_collect *node)
 t_collect *new_node(void *ptr)
 {
     t_collect *new;
-    
-    new = malloc(sizeof(t_collect));
-	if (!new)
-		return (NULL);
+    static int t;
+
+    new  = malloc(sizeof(t_collect));
+    if (!new)
+        return (NULL);
     new->content = ptr;
     new->next = NULL;
     return(new);
@@ -62,36 +64,13 @@ void *ft_malloc(size_t size,int flag)
     }
     ptr = malloc(size);
     if (!ptr)
-    	return (NULL);
+        return (NULL);
     node = new_node(ptr);
-    ptr_add_back(&head,node);    
+    if (node == NULL)
+        return (free(ptr), NULL);
+    ptr_add_back(&head,node);   
     return(ptr);
-} 
-void f()
-{
-    system("leaks a.out");
 }
-
-// int main()
-// {
-//     atexit(f);
-//     char *str;
-
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-//     str = ft_malloc(1000,0);
-
-//     ft_malloc(0,1);
-
-    
     
 
 // }

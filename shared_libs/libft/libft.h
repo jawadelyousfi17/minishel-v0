@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:23:37 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/02/14 17:00:18 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:25:11 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+#ifndef BUFFER_SIZE
 # define BUFFER_SIZE 10
-
+#endif
 typedef struct s_list
 {
 	void			*content;

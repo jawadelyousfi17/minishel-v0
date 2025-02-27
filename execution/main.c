@@ -1,81 +1,74 @@
 #include "../includes/minishell.h"
 
-
-void process_heredoc(t_data *data,int fd[2])
+void ft_error(char *file)
 {
-    char	*tmp;
-    
-    while (1)
-	{
-		tmp = readline("> ");
-		if (!tmp)
-			break ;
-		if (tmp && !ft_strncmp(tmp, data->limiter, ft_strlen(tmp) - 1))
-			break ;
-		write(fd[1], tmp, ft_strlen(tmp));
-		free(tmp);
-	}
-    close(fd[0]);
-    close(fd[1]);
-	exit(0);
-}
-
-void	heredoc(t_data *data)
-{
-	int pid;
-    int fd[2];
-
-    pipe(fd);
-    pid = fork();
-    if (pid == 0)
-        process_heredoc(data,fd);
-    wait(NULL);
-    dup2(fd[0],STDIN_FILENO);
-    close(fd[0]);
-    close(fd[1]);
+    if(file)
+    {
+        ft_putstr_fd("minishell: ",2);
+        perror(file);
+    }
+    else
+        perror("minishell");
+    exit(1);
 }
 
 void redirection(t_data *data)
 {
     int fd_in;
     int fd_out;
-    int i;
+    t_files *file;
 
-    i = 0;
     fd_in = -1;
     fd_out = -1;
-
-    while (data->files[i])
+    file = (t_files *)data->files;
+    while (file)
     {
-        if(data->files[i]->redirect_input == REDIRECT)
+        if(file->redirect_type == REDIRECT_INPUT)
         {
             close(fd_in);
-            fd_in = open(data->files[i]->in_file,O_RDONLY);
-            // if(fd_in < 0)
-            //     ft_error(data);
+            fd_in = open(file->file,O_RDONLY);
+            if(fd_in < 0)
+                ft_error(file->file);
             if(dup2(fd_in,STDIN_FILENO) < 0)
-                ;
-                // ft_error(data);
+                ft_error(NULL);
             close(fd_in);
         }
-        else if(data->redirect_input == HERE_DOC)
-            heredoc(data);
-        if(data->redirect_output == REDIRECT || data->redirect_output == APPEND)
+        else if(file->redirect_type == HERE_DOC_REDIRECT)
+        {
+            close(fd_in);
+            fd_in = open(file->file,O_RDONLY);
+            if(fd_in < 0)
+                ft_error(file->file);
+            if(dup2(fd_in,STDIN_FILENO) < 0)
+                ft_error(NULL);
+            unlink(file->file);
+            close(fd_in);
+        }
+        if(file->redirect_type == REDIRECT_OUTPUT || file->redirect_type == APPEND)
         {
             close(fd_out);
-            if (data->redirect_output == REDIRECT)
-                fd_out = open(data->outfile,O_CREAT | O_RDWR | O_TRUNC, 0644);
+            fd_out = open(file->file,O_DIRECTORY);
+            if(fd_out)
+            {
+                close(fd_out);
+                ft_putstr_fd("minishell: ",2);
+                ft_putstr_fd(file->file,2);
+                ft_putstr_fd(": Is a directory\n",2);
+                exit(1);
+            }
+            if (file->redirect_type == REDIRECT_OUTPUT)
+                fd_out = open(file->file,O_CREAT | O_RDWR | O_TRUNC, 0644);
             else
-                fd_out = open(data->outfile,O_CREAT | O_RDWR | O_APPEND, 0644);
-            // if(fd_out < 0)
-            //     ft_error(data);
+                fd_out = open(file->file,O_CREAT | O_RDWR | O_APPEND, 0644);
+            if(fd_out < 0)
+                ft_error(file->file);
             if(dup2(fd_out,STDOUT_FILENO) < 0)
-                ;
-                // ft_error(data);
+                ft_error(NULL);
             close(fd_out);
         }
-        i++;
+        file = (t_files *)data->files->next;
     }
+
 }
 
 void exec_one(t_data *data,char **env)
@@ -106,23 +99,26 @@ void process(t_data *data,char **env)
         exec_one(data,env);
 }
 
-void restore_terminal() {
+void restore_terminal() 
+{
     struct termios original;
     tcgetattr(STDIN_FILENO, &original);
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &original); 
+    tcsetattr(STDIN_FILENO,  TCSAFLUSH, &original);
 }
-void signal_handler(int sig) {
+void signal_handler(int sig) 
+{
+    rl_replace_line("", 0);
+    printf("\n");
     rl_on_new_line();
     rl_redisplay();
 }
 
-
-
-void set_terminal_raw() {
-    struct termios raw;
-    tcgetattr(STDIN_FILENO, &raw); 
-    raw.c_lflag &= ~(ECHO | ICANON); 
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw); 
+void set_terminal_raw() 
+{
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    // term.c_lflag &= ~(ECHOCTL);
+    tcsetattr(STDIN_FILENO,  TCSAFLUSH, &term); 
 }
 
 int main(int c ,char **v ,char **env)
@@ -133,10 +129,13 @@ int main(int c ,char **v ,char **env)
 
     set_terminal_raw();
     sig.sa_handler = &signal_handler;
+    sig.sa_flags = SA_RESTART;
+    // sig.sa_mask = ;
     sigaction(SIGINT,&sig,NULL);
+    
     while (1)
-    {
-        input = readline("minishell> ");
+    {   
+        input = readline("minishell>$ ");
         if (!input) 
         { 
             printf("exit\n");

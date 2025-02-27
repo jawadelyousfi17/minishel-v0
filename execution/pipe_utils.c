@@ -21,7 +21,6 @@ void	last_process(int fd[2][2], t_data *data, char **env,int i)
 		dup_and_close(fd[1][0], 1, fd);
 	else
 		dup_and_close(fd[0][0], 1, fd);
-		// sleep(20);
 	redirection(data);
 	p = process_helper(data);
 	if (!p)
