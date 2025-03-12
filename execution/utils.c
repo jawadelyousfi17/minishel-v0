@@ -9,10 +9,10 @@ char	*check_exe_helper(char **tmp, char *exe)
 	i = 0;
 	while (tmp[i])
 	{
-		str = ft_strjoin(tmp[i], "/");
+		str = ft_strjoin(tmp[i], "/",0);
 		if (!str)
 			ft_perr();
-		str = ft_strjoin(str, exe);
+		str = ft_strjoin(str, exe,0);
 		if (!str)
 			ft_perr();
 		if (!access(str, X_OK))
@@ -22,15 +22,15 @@ char	*check_exe_helper(char **tmp, char *exe)
 	return ( NULL);
 }
 
-char	*check_ifdir(char *exe)
+char	*check_ifdir(char *exe,t_minishell *m)
 {
 	int	fd;
 	char *str;
 
-	str = ft_strdup("pipex: ");
+	str = ft_strdup("minishell: ",0);
 	if (!str)
 		ft_perr();
-	str = ft_strjoin(str,exe);
+	str = ft_strjoin(str,exe,0);
 	if (!str)
 		ft_perr();
 	fd = open(exe, O_DIRECTORY);
@@ -38,42 +38,43 @@ char	*check_ifdir(char *exe)
 	{
 		if (!access(exe, X_OK))
 		{
-			str = ft_strdup(exe);
+			str = ft_strdup(exe,0);
 			if (!str)
 				ft_perr();
 			return (str);
 		}
-		str = ft_strjoin(str ,": No such file or directory\n");
+		m->flag = 0;
+		str = ft_strjoin(str ,": No such file or directory\n",0);
 		if (!str)
 			ft_perr();
 		ft_putstr_fd(str, 2);
-		exit(127);
+		m->exit_code = 127;
 	}
 	else
 	{
+		m->flag = 0;
 		close(fd);
-		str = ft_strjoin(str ,": is a directory\n");
+		str = ft_strjoin(str ,": is a directory\n",0);
 		if (!str)
 			ft_perr();
 		ft_putstr_fd(str, 2);
-		exit(126);
+		m->exit_code = 126;
 	}
 	return (NULL);
 }
 
-char	*check_exe(char *paths, char *exe)
+char	*check_exe(char *paths, char *exe,t_minishell *m)
 {
 	char	**tmp;
 	char	*str;
 
-	if (!ft_strncmp(exe,"../",3) || !ft_strncmp(exe,"./",2) || exe[0] == '/'
-		|| exe[ft_strlen(exe) - 1] == '/')
-		return (check_ifdir(exe));
+	if (ft_strchr(exe,'/'))
+		return (check_ifdir(exe,m));
 	if (exe[0] == '.')//check bash
 		return ( NULL);
 	if(!paths)
 	{
-		str = ft_strdup(exe);
+		str = ft_strdup(exe,0);
 		return(str);
 	}
 	tmp = ft_split(paths, ':');
@@ -82,11 +83,12 @@ char	*check_exe(char *paths, char *exe)
 	return (check_exe_helper(tmp, exe));
 }
 
-char	*process_helper(t_data *data)
+char	*process_helper(t_data *data,t_minishell *m)
 {
 	int		i;
 	char	*paths;
-
+	
+	m->flag = 1;
 	paths = getenv("PATH");
-	return (check_exe(paths, data->cmd[0]));
+	return (check_exe(paths, ft_strdup(data->cmd[0],0),m));
 }

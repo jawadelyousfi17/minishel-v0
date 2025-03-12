@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 10:37:35 by zbouchra          #+#    #+#             */
-/*   Updated: 2024/11/03 13:00:55 by zbouchra         ###   ########.fr       */
+/*   Created: 2024/10/31 11:52:46 by jel-yous          #+#    #+#             */
+/*   Updated: 2025/03/11 22:13:23 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
+	char	*t;
 
-	i = 0;
-	while (s[i])
+	if (!s || !*s)
+		return (NULL);
+	t = (char *)s;
+	c = (char) c;
+	while (*t)
 	{
-		if (s[i] == (char)c)
-			return ((char *)s + i);
-		i++;
+		if (*t == c)
+			return (t);
+		t++;
 	}
-	if (s[i] == '\0' && (char)c == '\0')
-	{
-		return ((char *)s + i);
-	}
+	if (!*t && !c)
+		return (t);
 	return (NULL);
 }
