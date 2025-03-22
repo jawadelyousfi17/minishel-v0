@@ -58,9 +58,7 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     {
         line = readline("> ");
         if (!line)
-        {
             break;
-        }
         if (is_equal(line, limiter))
         {
             free(line);

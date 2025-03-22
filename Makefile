@@ -17,7 +17,7 @@ gb_obj = $(gb_src:.c=.o)
 env_obj = $(env_src:.c=.o)
 builtin_obj = $(builtin_src:.c=.o)
 utils_obj = $(utils:.c=.o)
-readline =  $(rdl_path)
+readline = -lreadline $(rdl_path)
 
 all : $(NAME)
 	echo "Done"
@@ -25,20 +25,20 @@ $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $
 	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
 
 tokenizer/%.o : tokenizer/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 
 execution/%.o : execution/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 
 garbage_collector/%.o : garbage_collector/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 builtin/%.o : builtin/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 env/%.o : env/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 
 utils/%.o : utils/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
 
 clean : 
 	rm -rf $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj)
