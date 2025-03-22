@@ -61,12 +61,6 @@ char **ft_create_env()
     return env;
 }
 
-int hl_gb_atoi(char *s)
-{
-    if (!*s)
-        return 0;
-    return ft_atoi(s) + 1;
-}
 
 char **gb_get_all_env(char **env)
 {
@@ -74,8 +68,6 @@ char **gb_get_all_env(char **env)
     char *lvl_value;
     char *lvl;
 
-    if (*env == NULL)
-        return ft_create_env();
     new_env = ft_copy_env(env);
     if (!new_env)
         return NULL;
@@ -86,9 +78,14 @@ char **gb_get_all_env(char **env)
         return new_env;
     }
     if (ft_atoi(lvl) == 999)
-        lvl_value = ft_strdup("", NO_GB);
+    {
+        printf("minishell: warning: shell level (999) too high, resetting to 1\n");
+        hl_ft_unset("SHLVL", &new_env);
+        free(lvl);
+        return new_env;
+    }
     else
-        lvl_value = ft_itoa(hl_gb_atoi(lvl),0);
+        lvl_value = ft_itoa(ft_atoi(lvl) + 1,0);
     free(lvl);
     if (!lvl_value)
         return (ft_free_env(new_env));

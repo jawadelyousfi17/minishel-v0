@@ -18,6 +18,8 @@ int ft_unset(char **args, char ***env);
 
 int ft_env(char **env);
 
+//hlp
+int hl_ft_unset(char *var_name, char ***env);
 
 
 // expander
