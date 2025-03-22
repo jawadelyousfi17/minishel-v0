@@ -6,7 +6,7 @@ int hl_set_env_echo(char *s, char ***env, char *new_line)
     {
         if (ft_set_env(env, "_", s) == -1)
         {
-           er4("echo: ", strerror(errno), NULL, NULL);
+            er4("echo: ", strerror(errno), NULL, NULL);
             return (-1);
         }
     }
@@ -14,7 +14,7 @@ int hl_set_env_echo(char *s, char ***env, char *new_line)
     {
         if (ft_set_env(env, "_", "echo") == -1)
         {
-           er4("echo: ", strerror(errno), NULL, NULL);
+            er4("echo: ", strerror(errno), NULL, NULL);
             return (-1);
         }
     }
@@ -27,18 +27,24 @@ int hl_gb_echo(char **s, char *new_line, int i, char ***env)
     {
         if (printf("%s", s[i]) == -1)
         {
-           er4("echo: can't write", NULL, NULL, NULL);
+            er4("echo: can't write", NULL, NULL, NULL);
             return (1);
         }
         if (s[i + 1])
-            printf(" ");
+        {
+            if (printf(" ") == -1)
+            {
+                er4("echo: can't write", NULL, NULL, NULL);
+                return (1);
+            }
+        }
         i++;
     }
     if (hl_set_env_echo(s[i - 1], env, new_line) == -1)
         return (1);
     if (printf("%s", new_line) == -1)
     {
-       er4("echo: can't write", NULL, NULL, NULL);
+        er4("echo: can't write", NULL, NULL, NULL);
         return (1);
     }
     return 0;

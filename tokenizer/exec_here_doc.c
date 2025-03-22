@@ -27,12 +27,6 @@ static void read_line(char *limiter, int is_qt, t_minishell *m, char **r)
     char *line;
     char *nl;
 
-<<<<<<< HEAD
-    fd = open(file_path, O_CREAT | O_RDWR | O_EXLOCK, 0600);
-    if (fd < 0)
-        return fd;
-=======
->>>>>>> 7340e78bda0a69581792adc105ef263488c6b7bf
     while (1)
     {
         line = readline("> ");
@@ -64,7 +58,7 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     read_line(limiter, is_qt, m, &r);
     if (r == NULL)
         return -1;
-    fd = open(file_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+    fd = open(file_path, O_CREAT | O_RDWR , 0644);
     if (fd < 0)
         return -1;
     if (write(fd, r, ft_strlen(r)) < 0)
@@ -107,6 +101,7 @@ int ft_execute_heredoc(t_data *d, t_minishell *m)
     char *file_path;
     int fd;
     t_list *d1;
+    
     if (d->pipe)
     {
         d1 = d->pipe_cmd;
