@@ -90,7 +90,7 @@ char *ft_strndup(char *s, size_t len, int flag);
 int is_equal(char *s, char *p);
 char *ft_itoa(int n, int flag);
 char	**ft_split(char const *s, char c, int flag);
-int ft_isdigit(char c);
+int ft_isdigit(int c);
 
 // lists
 t_list *ft_lstnew(void *content);
