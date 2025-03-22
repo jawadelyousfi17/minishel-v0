@@ -3,7 +3,7 @@
 
 # Executables
 a.out
-
+minishell
 # Compiled libraries
 *.so
 
