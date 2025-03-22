@@ -12,7 +12,7 @@ static char *create_tmp()
         n = ft_itoa(i, GB_C);
         if (n == NULL)
             return NULL;
-        file_path = ft_strjoin("minishel_", n, 0);
+        file_path = ft_strjoin("/tmp/minishel_", n, 0);
         if (file_path == NULL)
             return NULL;
         if (access(file_path, F_OK) != 0)
@@ -25,17 +25,22 @@ static char *create_tmp()
 static int write_to_heredoc(int fd, char *line, int is_qt, t_minishell *m)
 {
     char *r;
+    char *l;
 
+    l = ft_strjoin(line, "\n", 0);
+    free(line);
+    if (l == NULL)
+        return (0);
     if (!is_qt)
     {
-        r = ft_expand_here_doc(line, m);
+        r = ft_expand_here_doc(l, m);
         if (r == NULL)
-            return (free(line), 0);
+            return (0);
     }
     else
-        r = line;
-    if (write(fd, r, ft_strlen(r)) == -1 || write(fd, "\n", 1) == -1)
-        return (free(line), 0);
+        r = l;
+    if (write(fd, r, ft_strlen(r)) == -1)
+        return (0);
     return 1;
 }
 
@@ -45,6 +50,8 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     int fd;
 
     fd = open(file_path, O_CREAT | O_RDWR, 0644);
+    if (unlink(file_path) == -1)
+        return -1;
     if (fd < 0)
         return fd;
     while (1)
@@ -58,10 +65,9 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
             break;
         }
         if (!write_to_heredoc(fd, line, is_qt, m))
-            return (unlink(file_path), -1);
-        free(line);
+            return (-1);
     }
-    return (unlink(file_path), fd);
+    return (fd);
 }
 
 int ft_execute_files(t_files **f, t_minishell *m)
@@ -80,12 +86,9 @@ int ft_execute_files(t_files **f, t_minishell *m)
             file_path = create_tmp();
             if (file_path == NULL)
                 return 0;
-            printf("is quoted %d\n", f[i]->is_quoted);
             fd = execute_heredoc(file_path, f[i]->file, f[i]->is_quoted, m);
             if (fd < 0)
-            {
                 return 0;
-            }
             f[i]->fd = fd;
         }
         i++;

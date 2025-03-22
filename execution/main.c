@@ -72,7 +72,7 @@ t_redirect redirection_builtins(t_data *data,t_minishell *m)
                 return(close(fd_in),ft_error_builtin(NULL,m));
             close(fd_in);
         }
-        else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
+        else if(data->files[i]->redirect_type == HERE_DOC)
         {
             if(dup2(data->files[i]->fd,STDIN_FILENO) < 0)
                 return(close(data->files[i]->fd),ft_error_builtin("dup2",m));
@@ -111,6 +111,7 @@ void redirection(t_data *data,t_minishell *m)
     {
         // if(data->files[i]->is_ambs == 1)
         //     err_ambs(data->files[i]->file);
+        fprintf(stderr, "fd = %d\n", data->files[i]->redirect_type);
         if(data->files[i]->redirect_type == REDIRECT_INPUT)
         {
             close(fd_in);
@@ -121,10 +122,11 @@ void redirection(t_data *data,t_minishell *m)
                 ft_error(NULL,fd_in);
             close(fd_in);
         }
-        else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
+        else if(data->files[i]->redirect_type == HERE_DOC)
         {
-            
+            fprintf(stderr,"%d\n",data->files[i]->fd);
             if(dup2(data->files[i]->fd,STDIN_FILENO) < 0)
+            
                 ft_error("dup2",data->files[i]->fd);
             close(data->files[i]->fd);
         }
