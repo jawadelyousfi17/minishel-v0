@@ -25,17 +25,22 @@ static char *create_tmp()
 static int write_to_heredoc(int fd, char *line, int is_qt, t_minishell *m)
 {
     char *r;
+    char *l;
 
+    l = ft_strjoin(line, "\n", 0);
+    free(line);
+    if (l == NULL)
+        return (0);
     if (!is_qt)
     {
-        r = ft_expand_here_doc(line, m);
+        r = ft_expand_here_doc(l, m);
         if (r == NULL)
-            return (free(line), 0);
+            return (0);
     }
     else
-        r = line;
-    if (write(fd, r, ft_strlen(r)) == -1 || write(fd, "\n", 1) == -1)
-        return (free(line), 0);
+        r = l;
+    if (write(fd, r, ft_strlen(r)) == -1)
+        return (0);
     return 1;
 }
 
@@ -44,7 +49,7 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     char *line;
     int fd;
 
-    fd = open(file_path, O_CREAT | O_RDWR , 0644);
+    fd = open(file_path, O_CREAT | O_RDWR, 0644);
     if (unlink(file_path) == -1)
         return -1;
     if (fd < 0)
@@ -53,15 +58,16 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     {
         line = readline("> ");
         if (!line)
+        {
             break;
+        }
         if (is_equal(line, limiter))
         {
             free(line);
             break;
         }
         if (!write_to_heredoc(fd, line, is_qt, m))
-            return ( -1);
-        free(line);
+            return (-1);
     }
     return (fd);
 }
