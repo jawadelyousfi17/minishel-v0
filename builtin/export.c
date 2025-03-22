@@ -97,13 +97,13 @@ int ft_export(char **s, char ***env)
         type = hl_export_type(s[i]);
         if (type == ERROR_FORMAT)
         {
-           er4(": export: `", s[i], "': not a valid identifier", NULL);
+           er4("export: `", s[i], "': not a valid identifier", NULL);
             err = 1;
         }
         else if (hl_export(s[i], type, env) == 0)
         {
-           er4(": export: ", strerror(errno), NULL, NULL);
-           er4(": export: can't export `", s[i], "'", NULL);
+           er4("export: ", strerror(errno), NULL, NULL);
+           er4("export: can't export `", s[i], "'", NULL);
             err = 1;
         }
         i++;

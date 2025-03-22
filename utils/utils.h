@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "../env/env.h"
+
 // Garbage collector
 #define GB_C 0
 #define GB_NC 2
@@ -52,6 +54,8 @@ typedef struct s_files
 {
     t_token_type redirect_type;
     char *file;
+    int is_quoted;
+    int fd;
     int is_ambs;
 } t_files;
 

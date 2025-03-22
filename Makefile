@@ -17,10 +17,10 @@ gb_obj = $(gb_src:.c=.o)
 env_obj = $(env_src:.c=.o)
 builtin_obj = $(builtin_src:.c=.o)
 utils_obj = $(utils:.c=.o)
-readline = -lreadline -L /goinfre/zbouchra/homebrew/opt/readline/lib -I /goinfre/zbouchra/homebrew/opt/readline/include
+readline =  $(rdl_path)
 
 all : $(NAME)
-
+	echo "Done"
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
 	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
 

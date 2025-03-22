@@ -1,0 +1,11 @@
+# Compiled object files
+*.o
+
+# Executables
+a.out
+minishell
+# Compiled libraries
+*.so
+
+# Build directories
+build/

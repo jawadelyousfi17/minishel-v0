@@ -12,7 +12,7 @@ static char *create_tmp()
         n = ft_itoa(i, GB_C);
         if (n == NULL)
             return NULL;
-        file_path = ft_strjoin("/tmp/minishel_", n, 0);
+        file_path = ft_strjoin("minishel_", n, 0);
         if (file_path == NULL)
             return NULL;
         if (access(file_path, F_OK) != 0)
@@ -46,41 +46,72 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
 
     fd = open(file_path, O_CREAT | O_RDWR, 0644);
     if (fd < 0)
-        return 0;
+        return fd;
     while (1)
     {
         line = readline("> ");
         if (!line)
-            return (close(fd), 1);
+            break;
         if (is_equal(line, limiter))
         {
             free(line);
             break;
         }
         if (!write_to_heredoc(fd, line, is_qt, m))
-            return (close(fd), 0);
+            return (unlink(file_path), -1);
         free(line);
     }
-    return (close(fd), 1);
+    return (unlink(file_path), fd);
 }
 
-int ft_execute_heredoc(t_token *t, t_minishell *m)
+int ft_execute_files(t_files **f, t_minishell *m)
 {
+    int fd;
+    int i;
     char *file_path;
 
-    while (t)
+    i = 0;
+    if (!f)
+        return 1;
+    while (f[i])
     {
-        if (t->type == HERE_DOC)
+        if (f[i]->redirect_type == HERE_DOC)
         {
-            t->type = HERE_DOC_REDIRECT;
             file_path = create_tmp();
             if (file_path == NULL)
                 return 0;
-            if (execute_heredoc(file_path, t->next->value, t->is_quoted, m) == 0)
-                return (0);
-            t->next->value = file_path;
+            printf("is quoted %d\n", f[i]->is_quoted);
+            fd = execute_heredoc(file_path, f[i]->file, f[i]->is_quoted, m);
+            if (fd < 0)
+            {
+                return 0;
+            }
+            f[i]->fd = fd;
         }
-        t = t->next;
+        i++;
+    }
+    return 1;
+}
+
+int ft_execute_heredoc(t_data *d, t_minishell *m)
+{
+    char *file_path;
+    int fd;
+    t_list *d1;
+    if (d->pipe)
+    {
+        d1 = d->pipe_cmd;
+        while (d1)
+        {
+            if (ft_execute_files(((t_data *)d1->content)->files, m) == 0)
+                return 0;
+            d1 = d1->next;
+        }
+    }
+    else
+    {
+        if (ft_execute_files(d->files, m) == 0)
+            return 0;
     }
     return 1;
 }

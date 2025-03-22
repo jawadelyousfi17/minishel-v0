@@ -6,12 +6,23 @@
 char *ft_getenv(char *name, t_minishell *m)
 {
     char *value;
+    char *var_val;
 
-    (void)m;
-    value = getenv(name);
+    if (is_equal(name, "?"))
+    {
+        var_val = ft_itoa(m->exit_code, GB_C);
+        if (!var_val)
+            return NULL;
+        return var_val;
+    }
+    value = gb_get_env(*(m->env) ,name);
     if (!value)
         return ft_strdup("", GB_C);
-    return ft_strdup(value, GB_C);
+    var_val = ft_strdup(value, GB_C);
+    free(value);
+    if (!var_val)
+        return NULL;
+    return var_val;
 }
 int ft_is_operator(t_token *token)
 {
