@@ -1,20 +1,39 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 volatile sig_atomic_t g_sigint_received = 0;
 
-void ft_error(char *file)
+t_redirect err_ambs_builtin(char *file,t_minishell *m)
 {
-    if(file)
-    {
-        ft_putstr_fd("minishell: ",2);
-        perror(file);
-    }
-    else
-        perror("minishell");
+   er4(file,": ambiguous redirect",NULL,NULL);
+    m->exit_code = 1;
+    return((t_redirect){-1,-1});
+}
+void err_ambs(char *file)
+{
+   er4(file,": ambiguous redirect",NULL,NULL);
     exit(1);
 }
 
-t_redirect redirection_builtins(t_data *data)
+t_redirect ft_error_builtin(char *file,t_minishell *m)
+{
+    if(file)
+        er4(file,": ",strerror(errno),NULL);
+    else
+        perror("minishell");
+    m->exit_code = 1;
+    return((t_redirect){-1,-1});
+}
+void ft_error(char *file,int fd)
+{
+    if(file)
+        er4(file,": ",strerror(errno),NULL);
+    else
+        perror("minishell");
+    close(fd);
+    exit(1);
+}
+
+t_redirect redirection_builtins(t_data *data,t_minishell *m)
 {
     int fd_in;
     int i;
@@ -41,46 +60,47 @@ t_redirect redirection_builtins(t_data *data)
         return (r);
     while (data->files[i])
     {
-        if(data->files[i]->type == REDIRECT_INPUT)
+        // if(data->files[i]->is_ambs == 1)
+        //     return(err_ambs_builtin(data->files[i]->file,m));
+        if(data->files[i]->redirect_type == REDIRECT_INPUT)
         {
             close(fd_in);
             fd_in = open(data->files[i]->file,O_RDONLY);
             if(fd_in < 0)
-                ft_error(data->files[i]->file);
+                return(ft_error_builtin(data->files[i]->file,m));
             if(dup2(fd_in,STDIN_FILENO) < 0)
-                ft_error(NULL);
+                return(close(fd_in),ft_error_builtin(NULL,m));
             close(fd_in);
         }
-        else if(data->files[i]->type == HERE_DOC_REDIRECT)
+        else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
         {
             close(fd_in);
             fd_in = open(data->files[i]->file,O_RDONLY);
             if(fd_in < 0)
-                ft_error(data->files[i]->file);
+                return(unlink(data->files[i]->file),ft_error_builtin(data->files[i]->file,m));
             if(dup2(fd_in,STDIN_FILENO) < 0)
-                ft_error(NULL);
+                return(unlink(data->files[i]->file),close(fd_in),ft_error_builtin(NULL,m));
             unlink(data->files[i]->file);
             close(fd_in);
         }
-        if(data->files[i]->type == REDIRECT_OUTPUT || data->files[i]->type == APPEND)
+        if(data->files[i]->redirect_type == REDIRECT_OUTPUT || data->files[i]->redirect_type == APPEND)
         {
-            
             close(fd_out);
-            if (data->files[i]->type == REDIRECT_OUTPUT)
+            if (data->files[i]->redirect_type == REDIRECT_OUTPUT)
                 fd_out = open(data->files[i]->file,O_CREAT | O_RDWR | O_TRUNC, 0644);
             else
                 fd_out = open(data->files[i]->file,O_CREAT | O_RDWR | O_APPEND, 0644);
             if(fd_out < 0)
-                ft_error(data->files[i]->file);
+                return(ft_error_builtin(data->files[i]->file,m));
             if(dup2(fd_out,STDOUT_FILENO) < 0)
-                ft_error(NULL);
+                return(close(fd_out),ft_error_builtin(NULL,m));
             close(fd_out);
         }
         i++;
     }
     return (r);
 }
-void redirection(t_data *data)
+void redirection(t_data *data,t_minishell *m)
 {
     int fd_in;
     int i;
@@ -91,37 +111,44 @@ void redirection(t_data *data)
     i = 0;
     if(!data->files)
         return;
+    
     while (data->files[i])
     {
-        if(data->files[i]->type == REDIRECT_INPUT)
+        // if(data->files[i]->is_ambs == 1)
+        //     err_ambs(data->files[i]->file);
+        if(data->files[i]->redirect_type == REDIRECT_INPUT)
         {
             close(fd_in);
             fd_in = open(data->files[i]->file,O_RDONLY);
             if(fd_in < 0)
-                ft_error(data->files[i]->file);
+                ft_error(data->files[i]->file,-1);
+            if(dup2(fd_in,STDIN_FILENO) < 0)
+                ft_error(NULL,fd_in);
             close(fd_in);
         }
-        else if(data->files[i]->type == HERE_DOC_REDIRECT)
+        else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
         {
             close(fd_in);
             fd_in = open(data->files[i]->file,O_RDONLY);
             if(fd_in < 0)
-                ft_error(data->files[i]->file);
+                ft_error(data->files[i]->file,-1);
+            if(dup2(fd_in,STDIN_FILENO) < 0)
+                ft_error(NULL,fd_in);
             unlink(data->files[i]->file);
             close(fd_in);
         }
-        if(data->files[i]->type == REDIRECT_OUTPUT || data->files[i]->type == APPEND)
+        if(data->files[i]->redirect_type == REDIRECT_OUTPUT || data->files[i]->redirect_type == APPEND)
         {
             
             close(fd_out);
-            if (data->files[i]->type == REDIRECT_OUTPUT)
+            if (data->files[i]->redirect_type == REDIRECT_OUTPUT)
                 fd_out = open(data->files[i]->file,O_CREAT | O_RDWR | O_TRUNC, 0644);
             else
                 fd_out = open(data->files[i]->file,O_CREAT | O_RDWR | O_APPEND, 0644);
             if(fd_out < 0)
-                ft_error(data->files[i]->file);
+                ft_error(data->files[i]->file,-1);
             if(dup2(fd_out,STDOUT_FILENO) < 0)
-                ft_error(NULL);
+                ft_error(NULL,fd_out);
             close(fd_out);
         }
         i++;
@@ -134,7 +161,7 @@ int exec_builtins(t_data *data,t_minishell *m)
     if(!ft_strncmp(data->cmd[0],"cd",2))
         return(ft_cd(data,m));
     else if(!ft_strncmp(data->cmd[0],"pwd",3))
-        return(ft_pwd());
+        return(ft_pwd(m));
     else if(!ft_strncmp(data->cmd[0],"echo",4))
         return(ft_echo(data->cmd,m->env));
     else if(!ft_strncmp(data->cmd[0],"export",6))
@@ -157,27 +184,29 @@ void exec_one(t_minishell *m)
 
     if(m->data->is_builtin)
     {
-        r = redirection_builtins(m->data);
+        r = redirection_builtins(m->data,m);
         if(r.in == -1)
             return ;
-        m->exit_code = exec_builtins(m->data,m);
-        if(ft_set_env(m->env,"_",m->data->cmd[0]) < 0)
+        if (!is_equal(m->data->cmd[0],"echo"))
         {
-            perror("minishell");
-            exit(1);
+            if(ft_set_env(m->env,"_",m->data->cmd[0]) < 0)
+                ft_perr();
         }
+        m->exit_code = exec_builtins(m->data,m);
+        // if (!is_equal(m->data->cmd[0],"echo"))
+        // {
+        // if(ft_set_env(m->env,"_",m->data->cmd[0]) < 0)
+        //     ft_perr();
+        // }
         if(dup2(r.in,STDIN_FILENO) < 0)
         {
             close(r.in);
             close(r.out);
-            ft_error(NULL);
+            ft_error(NULL,-1);
         }
         close(r.in);
         if(dup2(r.out,STDOUT_FILENO) < 0)
-        {
-            close(r.out);
-            ft_error(NULL);
-        }
+            ft_error(NULL,r.out);
         close(r.out);
         return ;
     }
@@ -185,20 +214,16 @@ void exec_one(t_minishell *m)
     if(!cmd_path)
     {
         if(ft_set_env(m->env,"_",m->data->cmd[0]) < 0)
-        {
-            perror("minishell");
-            exit(1);
-        }
+            ft_perr();
     }
-    else if(ft_set_env(m->env,"_",cmd_path) < 0)
-    {
-        perror("minishell");
-        exit(1);
-    }
+    if(ft_set_env(m->env,"_",cmd_path) < 0)
+        ft_perr();
     pid = fork();
+    if(pid < 0)
+        ft_perr();
     if (pid == 0)
     {
-        redirection(m->data);
+        redirection(m->data,m);
         if (!cmd_path)
         {
             if(m->flag == 1)
@@ -206,7 +231,9 @@ void exec_one(t_minishell *m)
             exit(m->exit_code);
         }
         execve(cmd_path,m->data->cmd,*(m->env));
-        if_execve_failed(m->data,cmd_path);
+        if(*cmd_path)
+            if_execve_failed(m->data,cmd_path); 
+        exit(m->exit_code);
     }
     waitpid(pid,&status,0);
     m->exit_code = WEXITSTATUS(status);
@@ -245,6 +272,10 @@ void set_terminal(struct termios original_termios)
     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
+void f()
+{
+    system("leaks minishell");
+}
 int main(int c ,char **v ,char **env)
 {
     struct sigaction sig;
@@ -252,6 +283,7 @@ int main(int c ,char **v ,char **env)
     t_data *data;
     char *input;
     
+    // atexit(f);
     tcgetattr(STDIN_FILENO, &original);
     set_terminal(original);
     sig.sa_handler = &signal_handler;
@@ -259,10 +291,23 @@ int main(int c ,char **v ,char **env)
     sig.sa_flags = 0;
     sigaction(SIGINT,&sig,NULL);
     
-    char **new_env = ft_copy_env(env);//check env -i
+    char **new_env = gb_get_all_env(env);//check env -i
     t_minishell *m = malloc(sizeof(t_minishell));
     m->env = &new_env;
     m->exit_code = 0;
+    m->cwd = getcwd(NULL,0);
+    if(!isatty(0))
+    {
+        input = readline(NULL);
+        m->data = ft_initialize_data(input, m);
+        process(m);
+        free(input);
+        ft_malloc(0,1);
+        restore_terminal(original);
+        ft_free_env(*(m->env));
+        free(m);
+        exit(m->exit_code);
+    }
     while (1)
     {   
         g_sigint_received = 0;
@@ -273,13 +318,14 @@ int main(int c ,char **v ,char **env)
             {
                 if(*input)
                     add_history(input);
-                m->data = ft_init(input, m);
+                m->data = ft_initialize_data(input, m);
                 if(!m->data)
                 {
                     free(input);
                     continue;
                 }
                 process(m);
+                ft_malloc(0,1);
                 free(input);
             }
             else
@@ -292,6 +338,9 @@ int main(int c ,char **v ,char **env)
         else
             ;
     }
+    // ft_malloc(0,1);
     restore_terminal(original);
+    ft_free_env(*(m->env));
+    free(m);
     return(m->exit_code);
 }

@@ -1,22 +1,9 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 void	if_not_found(t_data *data)
 {
-	char *str;
-
-	str = ft_strdup("minishell: ",0);
-	if(!str)
-		ft_perr();
 	if (data->cmd[0])
-	{
-		str = ft_strjoin(str,data->cmd[0],0);
-		if(!str)
-			ft_perr();
-		str = ft_strjoin(str,": command not found\n",0);
-		if(!str)
-			ft_perr();
-		ft_putstr_fd(str,2);
-	}
+		er4(data->cmd[0],": command not found",NULL,NULL);
 	exit(127);
 }
 

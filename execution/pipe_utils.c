@@ -1,11 +1,11 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 void	process1(int fd[2][2], t_data *data, t_minishell *m)
 {
 	char	*cmd_path;
 
 	dup_and_close(0, fd[0][1], fd);
-	redirection(data);
+	redirection(data,m);
 	if(m->data->is_builtin)
         exec_builtins(data,m);
 	cmd_path = process_helper(data,m);
@@ -21,7 +21,9 @@ void	process1(int fd[2][2], t_data *data, t_minishell *m)
         exit(1);
     }
 	execve(cmd_path, data->cmd, *(m->env));
-	if_execve_failed(data, cmd_path);
+	if(*cmd_path)
+            if_execve_failed(m->data,cmd_path); 
+    exit(m->exit_code);
 }
 
 void	last_process(int fd[2][2], t_data *data, t_minishell *m,int i)
@@ -32,7 +34,7 @@ void	last_process(int fd[2][2], t_data *data, t_minishell *m,int i)
 		dup_and_close(fd[1][0], 1, fd);
 	else
 		dup_and_close(fd[0][0], 1, fd);
-	redirection(data);
+	redirection(data,m);
 	if(m->data->is_builtin)
         exec_builtins(data,m);
 	cmd_path = process_helper(data,m);
@@ -48,7 +50,9 @@ void	last_process(int fd[2][2], t_data *data, t_minishell *m,int i)
         exit(1);
     }
 	execve(cmd_path, data->cmd, *(m->env));
-	if_execve_failed(data,cmd_path);
+	if(*cmd_path)
+        if_execve_failed(m->data,cmd_path); 
+    exit(m->exit_code);
 }
 
 void	process_in_middle_odd(int fd[2][2], t_data *data, t_minishell *m)
@@ -56,7 +60,7 @@ void	process_in_middle_odd(int fd[2][2], t_data *data, t_minishell *m)
 	char	*cmd_path;
 
 	dup_and_close(fd[0][0], fd[1][1], fd);
-    redirection(data);
+    redirection(data,m);
 	if(m->data->is_builtin)
         exec_builtins(data,m);
 	cmd_path = process_helper(data,m);
@@ -72,7 +76,9 @@ void	process_in_middle_odd(int fd[2][2], t_data *data, t_minishell *m)
         exit(1);
     }
 	execve(cmd_path, data->cmd, *(m->env));
-	if_execve_failed(data,cmd_path);
+	if(*cmd_path)
+        if_execve_failed(m->data,cmd_path); 
+    exit(m->exit_code);
 }
 
 void	process_in_middle_even(int fd[2][2], t_data *data, t_minishell *m)
@@ -80,7 +86,7 @@ void	process_in_middle_even(int fd[2][2], t_data *data, t_minishell *m)
 	char	*cmd_path;
 
 	dup_and_close(fd[1][0], fd[0][1], fd);
-    redirection(data);
+    redirection(data,m);
 	if(m->data->is_builtin)
         exec_builtins(data,m);
 	cmd_path = process_helper(data,m);
@@ -96,5 +102,7 @@ void	process_in_middle_even(int fd[2][2], t_data *data, t_minishell *m)
         exit(1);
     }
 	execve(cmd_path, data->cmd, *(m->env));
-	if_execve_failed(data,cmd_path);
+	if(*cmd_path)
+        if_execve_failed(m->data,cmd_path); 
+    exit(m->exit_code);
 }

@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 char	*check_exe_helper(char **tmp, char *exe)
 {
@@ -19,45 +19,33 @@ char	*check_exe_helper(char **tmp, char *exe)
 			return (str);
 		i++;
 	}
-	return ( NULL);
+	return (NULL);
 }
 
 char	*check_ifdir(char *exe,t_minishell *m)
 {
 	int	fd;
-	char *str;
+	// char *str;
 
-	str = ft_strdup("minishell: ",0);
-	if (!str)
-		ft_perr();
-	str = ft_strjoin(str,exe,0);
-	if (!str)
-		ft_perr();
 	fd = open(exe, O_DIRECTORY);
 	if (fd < 0)
 	{
 		if (!access(exe, X_OK))
 		{
-			str = ft_strdup(exe,0);
-			if (!str)
-				ft_perr();
-			return (str);
+			// str = ft_strdup(exe,0);
+			// if (!str)
+			// 	ft_perr();
+			return (exe);
 		}
 		m->flag = 0;
-		str = ft_strjoin(str ,": No such file or directory\n",0);
-		if (!str)
-			ft_perr();
-		ft_putstr_fd(str, 2);
+		er4(exe,": No such file or directory",NULL,NULL);
 		m->exit_code = 127;
 	}
 	else
 	{
 		m->flag = 0;
 		close(fd);
-		str = ft_strjoin(str ,": is a directory\n",0);
-		if (!str)
-			ft_perr();
-		ft_putstr_fd(str, 2);
+		er4(exe,": is a directory",NULL,NULL);
 		m->exit_code = 126;
 	}
 	return (NULL);
@@ -69,15 +57,21 @@ char	*check_exe(char *paths, char *exe,t_minishell *m)
 	char	*str;
 
 	if (ft_strchr(exe,'/'))
-		return (check_ifdir(exe,m));
-	if (exe[0] == '.')//check bash
-		return ( NULL);
+		return (free(paths),check_ifdir(exe,m));
+	if (exe[0] == '.')
+	{
+		m->flag = 0;
+		er4(".: filename argument required\n",".: usage: . filename [arguments]",NULL,NULL);
+		m->exit_code = 2;
+		return(free(paths),NULL);
+	}
 	if(!paths)
 	{
-		str = ft_strdup(exe,0);
-		return(str);
+		// str = ft_strdup(exe,0);
+		return(exe);
 	}
-	tmp = ft_split(paths, ':');
+	tmp = ft_split(paths, ':',GB);
+	free(paths);
 	if (!tmp)
 		ft_perr();
 	return (check_exe_helper(tmp, exe));
@@ -89,6 +83,15 @@ char	*process_helper(t_data *data,t_minishell *m)
 	char	*paths;
 	
 	m->flag = 1;
-	paths = getenv("PATH");
+	if(!data->cmd || !*(data->cmd)[0])
+		return(ft_strdup("",0));
+	paths = gb_get_env(*(m->env),"PATH");
+	if(!paths)
+	{
+		if(!data->cmd)
+			return(ft_strdup("",0));
+		if(!access(data->cmd[0],X_OK))
+			return(ft_strdup(data->cmd[0],0));
+	}
 	return (check_exe(paths, ft_strdup(data->cmd[0],0),m));
 }

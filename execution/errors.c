@@ -1,7 +1,8 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 void ft_perr(void)
 {
+	//clean
 	perror("minishell");
 	exit(1);
 }
@@ -9,12 +10,8 @@ void ft_perr(void)
 
 void	close_exit(int exit_status, int fd[2][2], char *arg)
 {
-	
 	if (arg)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(arg);
-	}
+		er4(arg,": ",strerror(errno),NULL);
 	else
 		perror("minishell");
 	ft_close(fd);

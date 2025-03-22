@@ -1,68 +1,110 @@
-#include "../includes/minishell.h"
-
-void error_cd(char *path)
-{
-    char *str;
-
-    str = ft_strdup("minishell: cd:",GB);
-    if(!str)
-    {
-        perror("minishell");
-        return ;
-    }
-    str = ft_strjoin(str,path,GB);
-    if(!str)
-    {
-        perror("minishell");
-        return ;
-    }
-    perror(str);
-}
+#include "../include/minishell.h"
 
 int ft_cd(t_data *data,t_minishell *m)
 {
-    char *old_wd;
     char *home;
+    char *cwd;
+    char *tmp;
 
-    old_wd = getcwd(NULL,0);
-    if(!old_wd)
-        return (2);
-    if(data->cmd[1])
+    cwd = getcwd(NULL,0);
+    if(!cwd)
     {
-        if(chdir(data->cmd[1]) < 0)
-            return (error_cd(data->cmd[1]),free(old_wd),1);
-        if(ft_set_env(m->env,"PWD",data->cmd[1]) < 0)
-            return (free(old_wd),2);
+        if(data->cmd[1])
+        {
+            if(chdir(data->cmd[1]) < 0)
+            {
+                if(er4(": cd: ",strerror(errno),NULL,NULL))
+                    ft_perr();
+                return(1);
+            }
+            if(er4(": cd: error retrieving current directory:",
+            " getcwd: cannot access parent directories:",
+            " No such file or directory",NULL) < 0)
+                ft_perr();
+            if(ft_set_env(m->env,"OLDPWD",m->cwd) < 0)
+                ft_perr();
+            m->cwd = ft_strjoin(m->cwd,"/",GB);
+            if(!m->cwd)
+                ft_perr();
+            m->cwd = ft_strjoin(m->cwd,data->cmd[1],NO_GB);
+            if(!m->cwd)
+                ft_perr();
+            if(ft_set_env(m->env,"PWD",m->cwd) < 0)
+                ft_perr();
+        }
+        else
+        {
+            home = gb_get_env(*(m->env),"HOME");
+            if(!home)
+            {
+                if(er4(": cd: HOME not set",NULL,NULL,NULL) < 0)
+                    ft_perr();
+                return(1);
+            }
+            if(chdir(home) < 0)
+            {
+                if(er4(": cd: ",strerror(errno),NULL,NULL) < 0)
+                    ft_perr();
+                return(1);
+            }
+            if(ft_set_env(m->env,"OLDPWD",m->cwd) < 0)
+                ft_perr();
+            m->cwd = home;
+            if(ft_set_env(m->env,"PWD",m->cwd) < 0)
+                ft_perr();
+        }
     }
     else
     {
-        home = gb_get_env(*(m->env),"HOME");
-        if(!home)
+        if(data->cmd[1])
         {
-            ft_putstr_fd("minishell: cd: HOME not set\n",2);
-            return(free(old_wd),1);
+            if(chdir(data->cmd[1]) < 0)
+            {
+                if(er4(": cd: ",strerror(errno),NULL,NULL))
+                    ft_perr();
+                return(1);
+            }
+            if(ft_set_env(m->env,"OLDPWD",m->cwd) < 0)
+                ft_perr();
+            m->cwd = getcwd(NULL,0);
+            if(!m->cwd)
+                ft_perr();
+            if(ft_set_env(m->env,"PWD",m->cwd) < 0)
+                ft_perr();
         }
-        if(chdir(home) < 0)
-            return (error_cd(data->cmd[1]),free(home),free(old_wd),1);
-        if(ft_set_env(m->env,"PWD",home) < 0)
-            return (free(home),free(old_wd),1);
-        free(home);
+        else
+        {
+            home = gb_get_env(*(m->env),"HOME");
+            if(!home)
+            {
+                if(er4(": cd: HOME not set",NULL,NULL,NULL) < 0)
+                    ft_perr();
+                return(1);
+            }
+            if(chdir(home) < 0)
+            {
+                if(er4(": cd: ",strerror(errno),NULL,NULL) < 0)
+                    ft_perr();
+                return(1);
+            }
+            if(ft_set_env(m->env,"OLDPWD",m->cwd) < 0)
+                ft_perr();
+            m->cwd = home;
+            if(ft_set_env(m->env,"PWD",m->cwd) < 0)
+                ft_perr();
+        }
     }
-    if(ft_set_env(m->env,"OLDPWD",old_wd) < 0)
-        return (free(old_wd),1);
-    free(old_wd);
     return (0);
 }
 
-int ft_pwd(void)
+int ft_pwd(t_minishell *m)
 {
-    char *pwd;
 
-    pwd = getcwd(NULL,0);
-    if(!pwd)
-        return (1);
-    printf("%s\n",pwd);
-    free(pwd);
+    if(printf("%s\n",m->cwd) < 0)
+    {
+       er4(": printf: ",strerror(errno),NULL,NULL);
+        return(1);
+    }
     return (0);
 }
 

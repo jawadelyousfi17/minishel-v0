@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../include/minishell.h"
 
 void	alloc_fds(int *i, int fd[2][2])
 {
@@ -16,17 +16,21 @@ void	close_between_processes(int fd[2][2], int i)
 {
 	if (i % 2 == 0)
 	{
-		close(fd[1][1]);
-		close(fd[1][0]);
+		ft_close_single_pipe(fd[1]);
 		if (pipe(fd[1]) < 0)
+		{
+			ft_close_single_pipe(fd[0]);
 			ft_exit_failure_pipe();
+		}
 	}
 	else
 	{
-		close(fd[0][0]);
-		close(fd[0][1]);
+		ft_close_single_pipe(fd[0]);
 		if (pipe(fd[0]) < 0)
+		{
+			ft_close_single_pipe(fd[1]);
 			ft_exit_failure_pipe();
+		}
 	}
 }
 
