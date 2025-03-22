@@ -44,7 +44,7 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     char *line;
     int fd;
 
-    fd = open("wddd",   O_RDWR, 0644);
+    fd = open(file_path, O_CREAT | O_RDWR, 0644);
     if (fd < 0)
         return fd;
     while (1)
