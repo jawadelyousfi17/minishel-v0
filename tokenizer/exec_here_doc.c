@@ -44,7 +44,9 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     char *line;
     int fd;
 
-    fd = open(file_path, O_CREAT | O_RDWR, 0644);
+    fd = open(file_path, O_CREAT | O_RDWR , 0644);
+    if (unlink(file_path) == -1)
+        return -1;
     if (fd < 0)
         return fd;
     while (1)
@@ -58,10 +60,10 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
             break;
         }
         if (!write_to_heredoc(fd, line, is_qt, m))
-            return (unlink(file_path), -1);
+            return ( -1);
         free(line);
     }
-    return (unlink(file_path), fd);
+    return (fd);
 }
 
 int ft_execute_files(t_files **f, t_minishell *m)
@@ -80,12 +82,9 @@ int ft_execute_files(t_files **f, t_minishell *m)
             file_path = create_tmp();
             if (file_path == NULL)
                 return 0;
-            printf("is quoted %d\n", f[i]->is_quoted);
             fd = execute_heredoc(file_path, f[i]->file, f[i]->is_quoted, m);
             if (fd < 0)
-            {
                 return 0;
-            }
             f[i]->fd = fd;
         }
         i++;
