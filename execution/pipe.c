@@ -40,8 +40,10 @@ void exec_pipe(t_minishell *m)
 	int	status;
 	int	pid;
     int fd[2][2];
+	t_list *tmp;
 	
-    alloc_fds(&i,fd);
+    tmp = m->data->pipe_cmd;
+	alloc_fds(&i,fd);
 	while (i < m->data->n_of_cmds)
 	{
 		pid = fork();
@@ -53,15 +55,15 @@ void exec_pipe(t_minishell *m)
 			return ;
 		}
 		else if (pid == 0 && i == 0)
-			process1(fd,(t_data *)(m->data->pipe_cmd->content), m);
+			process1(fd,(t_data *)(tmp->content), m);
 		else if (pid == 0 && i == (m->data->n_of_cmds - 1))
-			last_process(fd,(t_data *)(m->data->pipe_cmd->content), m,i);
+			last_process(fd,(t_data *)(tmp->content), m,i);
 		else if (pid == 0 && (i % 2) != 0)
-			process_in_middle_odd(fd,(t_data *)(m->data->pipe_cmd->content), m);
+			process_in_middle_odd(fd,(t_data *)(tmp->content), m);
 		else if (pid == 0 && (i % 2) == 0)
-			process_in_middle_even(fd,(t_data *)(m->data->pipe_cmd->content), m);
+			process_in_middle_even(fd,(t_data *)(tmp->content), m);
 		close_between_processes(fd, i);
-		m->data->pipe_cmd = m->data->pipe_cmd->next;
+		tmp = tmp->next;
 		i++;
 	}
     ft_close(fd);
