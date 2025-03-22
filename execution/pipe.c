@@ -46,7 +46,12 @@ void exec_pipe(t_minishell *m)
 	{
 		pid = fork();
 		if (pid < 0)
-			close_exit(5, fd, NULL);
+		{
+			ft_close(fd);
+			m->exit_code = 1;
+			er4("fork :",strerror(errno),NULL,NULL);
+			return ;
+		}
 		else if (pid == 0 && i == 0)
 			process1(fd,(t_data *)(m->data->pipe_cmd->content), m);
 		else if (pid == 0 && i == (m->data->n_of_cmds - 1))

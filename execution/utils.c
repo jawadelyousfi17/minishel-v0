@@ -83,8 +83,10 @@ char	*process_helper(t_data *data,t_minishell *m)
 	char	*paths;
 	
 	m->flag = 1;
-	if(!data->cmd || !*(data->cmd)[0])
+	if(!data->cmd)
 		return(ft_strdup("",0));
+	if(!*(data->cmd)[0])
+		return(NULL);
 	paths = gb_get_env(*(m->env),"PATH");
 	if(!paths)
 	{

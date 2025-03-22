@@ -216,7 +216,7 @@ void exec_one(t_minishell *m)
         if(ft_set_env(m->env,"_",m->data->cmd[0]) < 0)
             ft_perr();
     }
-    if(ft_set_env(m->env,"_",cmd_path) < 0)
+    else if(ft_set_env(m->env,"_",cmd_path) < 0)
         ft_perr();
     pid = fork();
     if(pid < 0)

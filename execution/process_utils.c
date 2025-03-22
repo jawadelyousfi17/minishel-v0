@@ -24,9 +24,9 @@ void	if_execve_failed(t_data *data,char *cmd)
 void	dup_and_close(int in, int out, int fd[2][2])
 {
 	if (dup2(in, STDIN_FILENO) < 0)
-		close_exit(1, fd, NULL);
+		close_exit(1, fd, "dup2");
 	if (dup2(out, STDOUT_FILENO) < 0)
-		close_exit(1, fd, NULL);
+		close_exit(1, fd, "dup2");
 	ft_close(fd);
 }
 
