@@ -44,8 +44,6 @@ static int write_to_heredoc(int fd, char *line, int is_qt, t_minishell *m)
     return 1;
 }
 
-
-// to fix : close fd
 static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishell *m)
 {
     char *line;
@@ -53,13 +51,8 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     int fd2;
 
     fd = open(file_path, O_CREAT | O_RDWR, 0644);
-    if (unlink(file_path) == -1)
-        return -1;
     if (fd < 0)
         return fd;
-    fd2 = dup(fd);
-    if (fd2 < 0)
-        return -1;
     while (1)
     {
         line = readline("> ");
@@ -73,6 +66,10 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
         if (!write_to_heredoc(fd, line, is_qt, m))
             return (-1);
     }
+    close(fd);
+    fd2 = open(file_path, O_RDONLY);
+    if (unlink(file_path) == -1)
+        return -1;
     return (fd2);
 }
 
