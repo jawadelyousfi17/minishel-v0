@@ -87,7 +87,8 @@ int check_unclosed_quotes(char *s);
 // join tokens
 int ft_join_tokens(t_token **tokens);
 
-
+// heredocs
+int ft_close_here_docs(t_data *d);
 
 // init data
 t_data *init_data(t_token *t);
@@ -98,6 +99,8 @@ int ft_execute_heredoc(t_data *d, t_minishell *m);
 
 // initialize the data
 t_data *ft_initialize_data(char *line, t_minishell *m);
+
+
 void ft_perr(void);
 char	*process_helper(t_data *data,t_minishell *m);
 int    exec_builtins(t_data *data,t_minishell *m);
