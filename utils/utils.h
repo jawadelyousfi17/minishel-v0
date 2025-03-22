@@ -54,6 +54,8 @@ typedef struct s_files
 {
     t_token_type redirect_type;
     char *file;
+    int is_quoted;
+    int fd;
     int is_ambs;
 } t_files;
 

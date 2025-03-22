@@ -55,7 +55,7 @@ t_list *ft_split_by_var(char *s, t_minishell *m)
     h = NULL;
     while (*s)
     {
-        if (*s == '$' && (ft_isalpha(*(s + 1)) || *s == '?' || *s == '_'))
+        if (*s == '$' && (ft_isalpha(*(s + 1)) || *(s + 1) == '?' || *(s + 1) == '_'))
         {
             if (!ft_add_var(&h, &s, m))
                 return (NULL);

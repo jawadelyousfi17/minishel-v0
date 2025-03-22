@@ -94,7 +94,7 @@ t_data *init_data(t_token *t);
 
 // expand here doc
 char *ft_expand_here_doc(char *s, t_minishell *m);
-int ft_execute_heredoc(t_token *t, t_minishell *m);
+int ft_execute_heredoc(t_data *d, t_minishell *m);
 
 // initialize the data
 t_data *ft_initialize_data(char *line, t_minishell *m);

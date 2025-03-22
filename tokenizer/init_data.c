@@ -2,7 +2,7 @@
 
 
 
-t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs)
+t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs, int is_quoted)
 {
     t_files *f;
 
@@ -12,6 +12,7 @@ t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs)
     f->redirect_type = type;
     f->file = t->next->value;
     f->is_ambs = is_ambs;
+    f->is_quoted = is_quoted;
     return (f);
 }
 
@@ -32,11 +33,11 @@ int process_tokens(t_token **t, t_list **c, t_list **f)
         else if ((*t)->type == REDIRECT_INPUT || (*t)->type == REDIRECT_OUTPUT || 
                  (*t)->type == APPEND || (*t)->type == HERE_DOC)
         {
-            files = ft_init_files(*t, (*t)->type, (*t)->is_ambs);
-            n = ft_lstnew(ft_init_files(*t, (*t)->type, (*t)->is_ambs));
+            files = ft_init_files(*t, (*t)->type, (*t)->is_ambs, (*t)->is_quoted);
+            n = ft_lstnew(files);
             if (!files || !n)
                 return 0;
-            ft_lstadd_back(f, ft_lstnew(ft_init_files(*t, (*t)->type, (*t)->is_ambs)));
+            ft_lstadd_back(f, n);
             *t = (*t)->next;
         }
         *t = (*t)->next;
