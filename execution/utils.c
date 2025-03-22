@@ -1,95 +1,97 @@
-#include "../includes/minishell.h"
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
+#include "../include/minishell.h"
 
 char	*check_exe_helper(char **tmp, char *exe)
 {
 	int		i;
-	char	*to_free;
 	char	*str;
 
 	str = NULL;
 	i = 0;
 	while (tmp[i])
 	{
-		to_free = str;
-		str = ft_strjoin(tmp[i], "/");
-		free(to_free);
+		str = ft_strjoin(tmp[i], "/",0);
 		if (!str)
-			return (free_array(tmp), NULL);
-		to_free = str;
-		str = ft_strjoin(str, exe);
-		free(to_free);
+			ft_perr();
+		str = ft_strjoin(str, exe,0);
 		if (!str)
-			return (free_array(tmp), NULL);
+			ft_perr();
 		if (!access(str, X_OK))
 			return (str);
 		i++;
 	}
-	return (free_array(tmp), free(str), NULL);
+	return (NULL);
 }
 
-char	*check_ifdir(char *exe, char **arr)
+char	*check_ifdir(char *exe,t_minishell *m)
 {
 	int	fd;
+	// char *str;
 
 	fd = open(exe, O_DIRECTORY);
 	if (fd < 0)
 	{
 		if (!access(exe, X_OK))
-			return (ft_strdup(exe));
-		ft_putstr_fd("pipex: ", 2);
-		ft_putstr_fd(exe, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		free_array(arr);
-		exit(127);
+		{
+			// str = ft_strdup(exe,0);
+			// if (!str)
+			// 	ft_perr();
+			return (exe);
+		}
+		m->flag = 0;
+		er4(exe,": No such file or directory",NULL,NULL);
+		m->exit_code = 127;
 	}
 	else
 	{
+		m->flag = 0;
 		close(fd);
-		ft_putstr_fd("pipex: ", 2);
-		ft_putstr_fd(exe, 2);
-		ft_putstr_fd(": is a directory\n", 2);
-		free_array(arr);
-		exit(126);
+		er4(exe,": is a directory",NULL,NULL);
+		m->exit_code = 126;
 	}
 	return (NULL);
 }
 
-char	*check_exe(char *paths, char *exe, char **arr)
+char	*check_exe(char *paths, char *exe,t_minishell *m)
 {
 	char	**tmp;
+	char	*str;
 
-	if (exe[0] == '.' && exe[1] == '/')
-		return ( ft_strdup(exe));
-	if (exe[0] == '/')
-		return (check_ifdir(exe, arr));
+	if (ft_strchr(exe,'/'))
+		return (free(paths),check_ifdir(exe,m));
 	if (exe[0] == '.')
-		return ( NULL);
-	tmp = ft_split(paths, ':');
+	{
+		m->flag = 0;
+		er4(".: filename argument required\n",".: usage: . filename [arguments]",NULL,NULL);
+		m->exit_code = 2;
+		return(free(paths),NULL);
+	}
+	if(!paths)
+	{
+		// str = ft_strdup(exe,0);
+		return(exe);
+	}
+	tmp = ft_split(paths, ':',GB);
+	free(paths);
 	if (!tmp)
-		return (NULL);
+		ft_perr();
 	return (check_exe_helper(tmp, exe));
 }
 
-char	*process_helper(t_data *data)
+char	*process_helper(t_data *data,t_minishell *m)
 {
 	int		i;
 	char	*paths;
-
-	paths = getenv("PATH");
-	return (check_exe(paths, data->cmd[0], data->cmd));
+	
+	m->flag = 1;
+	if(!data->cmd || !*(data->cmd)[0])
+		return(ft_strdup("",0));
+	paths = gb_get_env(*(m->env),"PATH");
+	if(!paths)
+	{
+		if(!data->cmd)
+			return(ft_strdup("",0));
+		if(!access(data->cmd[0],X_OK))
+			return(ft_strdup(data->cmd[0],0));
+	}
+	return (check_exe(paths, ft_strdup(data->cmd[0],0),m));
 }
