@@ -22,7 +22,7 @@ readline = -lreadline $(rdl_path)
 all : $(NAME)
 
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
-	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) -lreadline $(readline) -o $(NAME)
+	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
 
 tokenizer/%.o : tokenizer/%.c include/minishell.h
 	cc $(FLAGS) -c $< $(rdl_include) -o $@

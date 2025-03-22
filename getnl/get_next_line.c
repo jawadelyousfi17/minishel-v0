@@ -16,7 +16,7 @@ void	get_return_line(char **big_line, char **line, int *read_count)
 		return ;
 	}
 	tmp = ft_sub_str(tmp + 1, 0, ft_str_len(tmp + 1));
-	*line = ft_sub_str(*big_line, 0, ft_strchr(*big_line, '\n') - (*big_line + 1));
+	*line = ft_sub_str(*big_line, 0, ft_strchr(*big_line, '\n') - *(big_line) + 1);
 	if (!tmp || !*line)
 	{
 		free(tmp);

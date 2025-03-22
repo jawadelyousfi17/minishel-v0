@@ -1,8 +1,7 @@
 #ifndef GNL_H
 # define GNL_H
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "../include/minishell.h"
 
 char	*ft_str_chr(const char *s, int c);
 size_t	ft_str_len(const char *s);

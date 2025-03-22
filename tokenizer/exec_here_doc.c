@@ -50,7 +50,7 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
     int fd;
     int fd2;
 
-    fd = open(file_path, O_CREAT | O_RDWR | O_EXLOCK, 0644);
+    fd = open(file_path, O_CREAT | O_RDWR | O_EXLOCK, 0600);
     if (fd < 0)
         return fd;
     while (1)
