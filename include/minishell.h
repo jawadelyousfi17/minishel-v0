@@ -14,7 +14,6 @@
 #include <signal.h>
 #include <termios.h>
 #include "../utils/utils.h"
-#include "../env/env.h"
 #include <limits.h>
 #include <errno.h>
 

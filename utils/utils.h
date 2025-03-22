@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "../env/env.h"
+
 // Garbage collector
 #define GB_C 0
 #define GB_NC 2
