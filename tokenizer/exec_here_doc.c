@@ -22,37 +22,17 @@ static char *create_tmp()
     return (NULL);
 }
 
-static int write_to_heredoc(int fd, char *line, int is_qt, t_minishell *m)
-{
-    char *r;
-    char *l;
-
-    l = ft_strjoin(line, "\n", 0);
-    free(line);
-    if (l == NULL)
-        return (0);
-    if (!is_qt)
-    {
-        r = ft_expand_here_doc(l, m);
-        if (r == NULL)
-            return (0);
-    }
-    else
-        r = l;
-    if (write(fd, r, ft_strlen(r)) == -1)
-        return (0);
-    return 1;
-}
-
-static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishell *m)
+static void read_line(char *limiter, int is_qt, t_minishell *m, char **r)
 {
     char *line;
-    int fd;
-    int fd2;
+    char *nl;
 
+<<<<<<< HEAD
     fd = open(file_path, O_CREAT | O_RDWR | O_EXLOCK, 0600);
     if (fd < 0)
         return fd;
+=======
+>>>>>>> 7340e78bda0a69581792adc105ef263488c6b7bf
     while (1)
     {
         line = readline("> ");
@@ -63,14 +43,37 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
             free(line);
             break;
         }
-        if (!write_to_heredoc(fd, line, is_qt, m))
-            return (-1);
+        nl = ft_strjoin(line, "\n", 0);
+        free(line);
+        if (!is_qt)
+            nl = ft_expand_here_doc(nl, m);
+        *r = ft_strjoin(*r, nl, 0);
+        if (*r == NULL || nl == NULL)
+            return ;
     }
-    close(fd);
-    fd2 = open(file_path, O_RDONLY);
-    if (unlink(file_path) == -1)
+    if (!*r)
+        *r = ft_strdup("", 0);
+}
+
+static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishell *m)
+{
+    int fd;
+    char *r;
+
+    r = NULL;
+    read_line(limiter, is_qt, m, &r);
+    if (r == NULL)
         return -1;
-    return (fd2);
+    fd = open(file_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (fd < 0)
+        return -1;
+    if (write(fd, r, ft_strlen(r)) < 0)
+        return -1;
+    close(fd);
+    fd = open(file_path, O_RDONLY);
+    if (unlink(file_path) < 0)
+        return -1;
+    return fd;
 }
 
 int ft_execute_files(t_files **f, t_minishell *m)

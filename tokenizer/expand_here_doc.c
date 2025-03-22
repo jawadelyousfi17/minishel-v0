@@ -73,6 +73,8 @@ char *ft_expand_here_doc(char *s, t_minishell *m)
     t_list *h;
     char *expanded;
 
+    if (!s)
+        return (NULL);
     h = ft_split_by_var(s, m);
     if (!h)
         return (NULL);
