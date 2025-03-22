@@ -18,27 +18,28 @@ env_obj = $(env_src:.c=.o)
 builtin_obj = $(builtin_src:.c=.o)
 utils_obj = $(utils:.c=.o)
 readline =  $(rdl_path)
+header_rl = -I /goinfre/zbouchra/homebrew/opt/readline/include
 
 all : $(NAME)
-	echo "Done"
+
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
-	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
+	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) -lreadline $(readline) -o $(NAME)
 
 tokenizer/%.o : tokenizer/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $<  -o $@
 
 execution/%.o : execution/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $< $(header_rl) -o $@
 
 garbage_collector/%.o : garbage_collector/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $<  -o $@
 builtin/%.o : builtin/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $<  -o $@
 env/%.o : env/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $<  -o $@
 
 utils/%.o : utils/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(readline) -o $@
+	cc $(FLAGS) -c $<  -o $@
 
 clean : 
 	rm -rf $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj)

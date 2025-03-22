@@ -25,7 +25,7 @@ char *ft_strndup(char *s, size_t len, int flag)
     return r;
 }
 
-int	ft_isdigit(char c)
+int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);

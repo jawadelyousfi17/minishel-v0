@@ -74,14 +74,9 @@ t_redirect redirection_builtins(t_data *data,t_minishell *m)
         }
         else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
         {
-            close(fd_in);
-            fd_in = open(data->files[i]->file,O_RDONLY);
-            if(fd_in < 0)
-                return(unlink(data->files[i]->file),ft_error_builtin(data->files[i]->file,m));
-            if(dup2(fd_in,STDIN_FILENO) < 0)
-                return(unlink(data->files[i]->file),close(fd_in),ft_error_builtin(NULL,m));
-            unlink(data->files[i]->file);
-            close(fd_in);
+            if(dup2(data->files[i]->fd,STDIN_FILENO) < 0)
+                return(close(data->files[i]->fd),ft_error_builtin("dup2",m));
+            close(data->files[i]->fd);
         }
         if(data->files[i]->redirect_type == REDIRECT_OUTPUT || data->files[i]->redirect_type == APPEND)
         {
@@ -128,14 +123,10 @@ void redirection(t_data *data,t_minishell *m)
         }
         else if(data->files[i]->redirect_type == HERE_DOC_REDIRECT)
         {
-            close(fd_in);
-            fd_in = open(data->files[i]->file,O_RDONLY);
-            if(fd_in < 0)
-                ft_error(data->files[i]->file,-1);
-            if(dup2(fd_in,STDIN_FILENO) < 0)
-                ft_error(NULL,fd_in);
-            unlink(data->files[i]->file);
-            close(fd_in);
+            
+            if(dup2(data->files[i]->fd,STDIN_FILENO) < 0)
+                ft_error("dup2",data->files[i]->fd);
+            close(data->files[i]->fd);
         }
         if(data->files[i]->redirect_type == REDIRECT_OUTPUT || data->files[i]->redirect_type == APPEND)
         {
