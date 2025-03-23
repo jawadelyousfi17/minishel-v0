@@ -113,6 +113,7 @@ void	process_in_middle_odd( int fd[2][2], t_data *data, t_minishell *m);
 void	process_in_middle_even(int fd[2][2], t_data *data, t_minishell *m);
 void exec_pipe(t_minishell *m);
 int ft_cd(t_data *data,t_minishell *m);
+int ft_perr_builtin(int err_code, char *arg);
 int ft_pwd(t_minishell *m);
 void	dup_and_close(int in, int out, int fd[2][2]);
 void redirection(t_data *data,t_minishell *m);

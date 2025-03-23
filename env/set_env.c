@@ -1,5 +1,6 @@
 #include "../include/minishell.h"
 
+
 char *ft_extract_var(char *s)
 {
     char *r;
@@ -10,6 +11,19 @@ char *ft_extract_var(char *s)
         i++;
     r = ft_strndup(s, i, GB);
     return r;
+}
+int ft_free_env_value(char *var, char **env)
+{
+    int i;
+
+    i = 0;
+    while (env[i])
+    {
+        if (is_equal(ft_extract_var(env[i]), var))
+            free(env[i]);
+        i++;
+    }
+    return(0);
 }
 
 int hl_change_env_value(char *var, char *value, char **env)
