@@ -1,3 +1,5 @@
+#ifndef UTILS_H
+# define UTILS_H
 
 #include <string.h>
 #include <stdlib.h>
@@ -128,3 +130,5 @@ int er4(char *s1, char *s2, char *s3, char *s4);
 
 // is_bltn
 int ft_is_builtin(char *s);
+
+#endif
