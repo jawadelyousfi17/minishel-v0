@@ -87,9 +87,9 @@ int ft_execute_files(t_files **f, t_minishell *m)
             if (file_path == NULL)
                 return 0;
             fd = execute_heredoc(file_path, f[i]->file, f[i]->is_quoted, m);
+            f[i]->fd = fd;
             if (fd < 0)
                 return 0;
-            f[i]->fd = fd;
         }
         i++;
     }

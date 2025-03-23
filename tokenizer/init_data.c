@@ -13,6 +13,7 @@ t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs, int is_quoted
     f->file = t->next->value;
     f->is_ambs = is_ambs;
     f->is_quoted = is_quoted;
+    f->fd = -1;
     return (f);
 }
 
