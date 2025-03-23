@@ -32,6 +32,7 @@ typedef enum e_token_type
     APPEND,
     SPACES,
     EXPORT,
+    EMPTY,
 } t_token_type;
 
 typedef struct s_list
