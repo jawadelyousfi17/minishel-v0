@@ -1,7 +1,7 @@
 
 NAME= minishell
 
-FLAGS = 
+FLAGS = -fsanitize=address 
 
 env_src = env/init_env.c env/utils_env.c env/get_env.c env/set_env.c
 builtin_src = builtin/export_no_args.c builtin/echo.c builtin/unset.c builtin/env.c builtin/utils_builtin.c builtin/export.c

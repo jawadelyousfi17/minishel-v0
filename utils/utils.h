@@ -45,6 +45,7 @@ typedef struct s_list
 typedef struct s_token
 {
     char *value;
+    char *raw_value;
     t_token_type type;
     int is_quoted;
     int is_ambs;
