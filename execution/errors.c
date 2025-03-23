@@ -6,7 +6,14 @@ void ft_perr(void)
 	perror("minishell");
 	exit(1);
 }
-
+int ft_perr_builtin(int err_code, char *arg)
+{
+	if (arg)
+		er4(arg,": ",strerror(errno),NULL);
+	else 
+		perror("minishell");
+	return(err_code);
+}
 
 void	close_exit(int exit_status, int fd[2][2], char *arg)
 {

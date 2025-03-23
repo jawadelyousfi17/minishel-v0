@@ -19,6 +19,7 @@ int er4(char *s1, char *s2, char *s3, char *s4)
     r = ft_strjoin(r, "\n", GB_C);
     if (r == NULL)
         return (perror("Error"), -1);
-    write(2, r, ft_strlen(r));
+    if(write(2, r, ft_strlen(r)) < 0)
+        return(perror("Error"), -1);
     return ft_strlen(r) + 1;
 }
