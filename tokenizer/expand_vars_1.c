@@ -1,5 +1,10 @@
 #include "../include/minishell.h"
 
+/**
+ * To FIX: handle empty vars
+ * to fix: handle empty vars as EMPTY token
+*/
+
 t_token *ft_ttokenize_nrm_txt(char **s, t_token *t, t_token **head, int c)
 {
     char *start;

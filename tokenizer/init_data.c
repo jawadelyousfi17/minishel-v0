@@ -1,5 +1,8 @@
 #include "../include/minishell.h"
 
+/**
+ * To fix: handle empty vars
+*/
 
 
 t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs, int is_quoted)
