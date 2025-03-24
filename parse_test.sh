@@ -328,6 +328,22 @@ No cmds" 29
 type: REDIRECT_INPUT
 is_ambs: false
 No cmds" 30
+
+	run_test "< \$wd" "file: $wd
+type: REDIRECT_INPUT
+is_ambs: false
+No cmds" 31
+
+	run_test "< L\$wb" "file: L\$wb
+type: REDIRECT_INPUT
+is_ambs: true
+No cmds" 32
+
+	run_test "< \$wb?L" "file: $wb?L
+type: REDIRECT_INPUT
+is_ambs: false
+No cmds" 33
+
 	
 	print_header "Syntax error tests"
 	# Test case 31
