@@ -1,4 +1,5 @@
 
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -30,6 +31,7 @@ typedef enum e_token_type
     APPEND,
     SPACES,
     EXPORT,
+    EMPTY,
 } t_token_type;
 
 typedef struct s_list
@@ -42,6 +44,7 @@ typedef struct s_list
 typedef struct s_token
 {
     char *value;
+    char *raw_value;
     t_token_type type;
     int is_quoted;
     int is_ambs;
@@ -128,3 +131,4 @@ int er4(char *s1, char *s2, char *s3, char *s4);
 
 // is_bltn
 int ft_is_builtin(char *s);
+

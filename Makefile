@@ -1,7 +1,7 @@
 
 NAME= minishell
 
-FLAGS = 
+FLAGS = -fsanitize=address 
 
 env_src = env/init_env.c env/utils_env.c env/get_env.c env/set_env.c
 builtin_src = builtin/export_no_args.c builtin/echo.c builtin/unset.c builtin/env.c builtin/utils_builtin.c builtin/export.c
@@ -20,6 +20,16 @@ utils_obj = $(utils:.c=.o)
 readline = -lreadline -L ~/Desktop/readline/lib
 
 all : $(NAME)
+
+# test
+test_src = tests/test.c
+test_obj = $(test_src:.c=.o)
+test : $(test_obj) $(parser_objs) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
+	cc $(FLAGS)  $(parser_objs) $(test_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline)  -o test
+test/%.o : test/%.c include/minishell.h
+	cc $(FLAGS) -c $< $(rdl_include) -o $@
+# test
+
 
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
 	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
@@ -41,7 +51,7 @@ utils/%.o : utils/%.c include/minishell.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
 
 clean : 
-	rm -rf $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj)
+	rm -rf $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(test_obj)
 
 fclean : clean
 	rm -rf $(NAME)

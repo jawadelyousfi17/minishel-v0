@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+
+
 int ft_do_stuff(t_token **tk)
 {
     char *r;

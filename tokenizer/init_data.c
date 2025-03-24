@@ -1,7 +1,9 @@
 #include "../include/minishell.h"
 
 /**
- * To fix: handle empty vars
+ * to test: 1/2
+ * To fix: handle empty vars  ✅done
+ * to fix: handle ambs raw value ✅done
 */
 
 
@@ -17,6 +19,8 @@ t_files *ft_init_files(t_token *t, t_token_type type, int is_ambs, int is_quoted
     f->is_ambs = is_ambs;
     f->is_quoted = is_quoted;
     f->fd = -1;
+    if (f->is_ambs)
+        f->file = t->value;
     return (f);
 }
 

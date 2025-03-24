@@ -2,7 +2,7 @@
 
 /**
  * To FIX: handle empty vars
- * to fix: handle empty vars as EMPTY token
+ * to fix: handle empty vars as EMPTY token~
 */
 
 t_token *ft_ttokenize_nrm_txt(char **s, t_token *t, t_token **head, int c)
@@ -41,6 +41,12 @@ t_token *ft_tokenize_espaces(char **s, t_token *t, t_token **head, int c)
 
 t_token *ft_expand_expand_util(t_token *t, t_token **head, int c, char *s)
 {
+    if (ft_strlen(s) == 0)
+    {
+        if (c)
+            return ft_add_token_front(head, "", EMPTY);
+        return ft_add_token_after(head, t, ft_new_token("", EMPTY));
+    }
     while (*s)
     {
         if (*s == ' ' || *s == '\t')
