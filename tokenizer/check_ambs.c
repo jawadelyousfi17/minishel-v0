@@ -1,6 +1,27 @@
 #include "../include/minishell.h"
 
-// to fix: if there is a space in a quoted string, it should not be considered as an ambs
+/**
+ * to test:
+ * To fix: raw value && fix ambs right #doing done
+ */
+
+char *ft_join_raw_value(t_token *t)
+{
+	char *r;
+
+	r = NULL;
+	if (t && t->type == SPACES)
+		t = t->next;
+	while (t && !ft_is_op_space(t))
+	{
+		r = ft_strjoin(r, t->raw_value, GB_C);
+		if (!r)
+			return NULL;
+		if (t)
+			t = t->next;
+	}
+	return r;
+}
 
 char *ft_join_after_redir(t_token *t, int *qt_found)
 {
@@ -58,7 +79,12 @@ int check_ambs(t_token *tokens)
 			if (!r)
 				return 0;
 			if (ft_is_ambs(r, qt_found))
+			{
 				t->is_ambs = 1;
+				t->value = ft_join_raw_value(t->next);
+				if (!t->value)
+					return 0;
+			}
 		}
 		if (t)
 			t = t->next;

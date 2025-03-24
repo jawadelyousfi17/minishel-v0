@@ -6,6 +6,7 @@ t_token *ft_new_token(char *value, t_token_type type)
     if (!new)
         return NULL;
     new->value = value;
+    new->raw_value = value;
     new->type = type;
     new->is_quoted = 0;
     new->is_ambs = 0;
