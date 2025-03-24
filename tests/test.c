@@ -73,7 +73,7 @@ void _print_data(t_data *d)
                            "%s"
                            "\n",
                            file->file, _trs(file->redirect_type), file->is_ambs ? "true" : "false");
-                        i++;
+                    i++;
                 }
                 // printf("\n");
             }
@@ -118,20 +118,41 @@ int main(int argc, char **argv, char **env)
     m->env = &new_env;
     m->exit_code = 0;
     m->cwd = getcwd(NULL, 0);
-    if (argc != 2)
+
     {
-        printf("Usage: %s <command>\n", argv[0]);
-        return 1;
+        while (TRUE && argc == 1)
+        {
+            char *line = readline("minishell$ ");
+            if (!line)
+            {
+                printf("\n");
+                ft_malloc(1, GB_CLEAR);
+                break;
+            }
+            add_history(line);
+            t_data *d = ft_initialize_data(line, m);
+            if (!d)
+            {
+                return 1;
+            }
+            _print_data(d);
+            ft_malloc(1, GB_CLEAR);
+        }
     }
 
-    
-
-    char *line = argv[1];
-    t_data *d = ft_initialize_data(line, m);
-    if (!d)
     {
-        return 1;
+        if (argc != 2)
+        {
+            printf("Usage: %s <command>\n", argv[0]);
+            return 1;
+        }
+        char *line = argv[1];
+        t_data *d = ft_initialize_data(line, m);
+        if (!d)
+        {
+            return 1;
+        }
+        _print_data(d);
+        ft_malloc(1, GB_CLEAR);
     }
-    _print_data(d);
-    ft_malloc(1, GB_CLEAR);
 }
