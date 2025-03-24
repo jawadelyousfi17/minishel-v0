@@ -1,8 +1,8 @@
 #include "../include/minishell.h"
 
 /**
- * to test:
- * To fix: raw value && fix ambs right #doing done
+ * to test: 1/2
+ * done: raw value && fix ambs right doing #done
  */
 
 char *ft_join_raw_value(t_token *t)
@@ -23,43 +23,60 @@ char *ft_join_raw_value(t_token *t)
 	return r;
 }
 
-char *ft_join_after_redir(t_token *t, int *qt_found)
+void ft_add_txt_tk(char *s, t_token **t)
 {
-	char *r;
+	while (*s)
+	{
+		if (*s == ' ' || *s == '\t')
+		{
+			while (*s && (*s == ' ' || *s == '\t'))
+				s++;
+			ft_add_token(t, " ", SPACES);
+		}
+		else
+		{
+			while (*s && *s != ' ' && *s != '\t')
+			{
+				ft_add_token(t, ft_strndup(s, 1, GB_C), TEXT);
+				s++;
+			}
+		}
+	}
+}
 
-	r = NULL;
+t_token *ft_split_var_file_name(t_token *t)
+{
+	t_token *new;
+
+	new = NULL;
 	if (t && t->type == SPACES)
 		t = t->next;
 	while (t && !ft_is_op_space(t))
 	{
-		if (t && (t->type == D_QUOTE || t->type == S_QUOTE))
-		{
-			*qt_found = 1;
-			if (ft_strlen(t->value) == 2)
-			{
-				t = t->next;
-				continue;
-			}
-		}
-		r = ft_strjoin(r, t->value, GB_C);
-		if (!r)
-			return NULL;
+		if (t->type != TEXT)
+			ft_add_token(&new, t->value, TEXT);
+		else
+			ft_add_txt_tk(t->value, &new);
 		if (t)
 			t = t->next;
 	}
-	return ft_strtrim(r, " \t", GB_C);
+	return new;
 }
 
-int ft_is_ambs(char *s, int qt_found)
+int check_space_or_empty(t_token *t)
 {
-	if (ft_strlen(s) == 0 && !qt_found)
-		return 1;
-	while (*s)
+	int is_empty;
+
+	is_empty = 1;
+	if (t && t->type == SPACES)
+		t = t->next;
+	while (t)
 	{
-		if (*s == ' ' || *s == '\t')
+		if (is_empty && t->type == TEXT)
+			is_empty = 0;
+		if (t->type == SPACES && t->next)
 			return 1;
-		else
-			s++;
+		t = t->next;
 	}
 	return 0;
 }
@@ -67,18 +84,14 @@ int ft_is_ambs(char *s, int qt_found)
 int check_ambs(t_token *tokens)
 {
 	t_token *t;
-	int qt_found;
 
 	t = tokens;
 	while (t)
 	{
 		if (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT || t->type == APPEND)
 		{
-			qt_found = 0;
-			char *r = ft_join_after_redir(t->next, &qt_found);
-			if (!r)
-				return 0;
-			if (ft_is_ambs(r, qt_found))
+			t_token *new_t = ft_split_file_name(t->next);
+			if (!new_t || check_space_or_empty(new_t))
 			{
 				t->is_ambs = 1;
 				t->value = ft_join_raw_value(t->next);

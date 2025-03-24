@@ -150,14 +150,14 @@ is_ambs: false
 cmds: {wc} {-w}" 8
 	
 	# Test case 9
-	run_test "export a=\$a\"ok\" < inf\"file\"\$a\$s" "file: inffile$a$s
+	run_test "export a=\$a\"ok\" < inf\"file\"\$a\$s" "file: inf\"file\"\$a\$s
 type: REDIRECT_INPUT
 is_ambs: true
 cmds: {export} {a=AAok}" 9
 	
 	# Test case 10
 	run_test "export a=\$a\"ok\" < inf\"file\"\$a\$s | a=\$s" "pipes: 
-file: inffile$a$s
+file: inf\"file\"\$a\$s
 type: REDIRECT_INPUT
 is_ambs: true
 cmds: {export} {a=AAok} 
@@ -167,7 +167,7 @@ cmds: {a=first second third}" 10
 	
 	# Test case 11
 	run_test "export a=\$a\"ok\" < inf\"file\"\$a\$s | a=\$s | a=\$u" "pipes: 
-file: inffile$a$s
+file: inf\"file\"\$a\$s
 type: REDIRECT_INPUT
 is_ambs: true
 cmds: {export} {a=AAok} 
@@ -180,7 +180,7 @@ cmds: {a=first second  }" 11
 	
 	# Test case 12
 	run_test "export a=\$a\"ok\" < inf\"file\"\$a\$s | a=\$s | a=\$u | a=\$v >> out\$c >> out\"file\"" "pipes: 
-file: inffile$a$s
+file: inf\"file\"\$a\$s
 type: REDIRECT_INPUT
 is_ambs: true
 cmds: {export} {a=AAok} 
@@ -324,7 +324,7 @@ is_ambs: false
 No cmds" 29
 	
 	# Test case 30
-	run_test "< \"  t\"\$c\"  t\"" "file:   t\$c  
+	run_test "< \"  t\"\$c\"  t\"" "file:   t$c  t
 type: REDIRECT_INPUT
 is_ambs: false
 No cmds" 30
