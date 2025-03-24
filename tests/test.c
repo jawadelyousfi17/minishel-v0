@@ -73,7 +73,7 @@ void _print_data(t_data *d)
                            "%s"
                            "\n",
                            file->file, _trs(file->redirect_type), file->is_ambs ? "true" : "false");
-                    i++;
+                        i++;
                 }
                 // printf("\n");
             }
@@ -114,34 +114,18 @@ int main(int argc, char **argv, char **env)
 {
 
     char **new_env = gb_get_all_env(env); // check env -i
-    t_minishell *m = ft_malloc(sizeof(t_minishell), GB_NC);
+    t_minishell *m = malloc(sizeof(t_minishell));
     m->env = &new_env;
     m->exit_code = 0;
-   
-    {
-        while (TRUE)
-        {
-            char *line = readline("minishell> ");
-            if (!line)
-            {
-                break;
-            }
-            t_data *d = ft_initialize_data(line, m);
-            if (!d)
-            {
-                continue;;
-            }
-            _print_data(d);
-            free(line);
-            ft_malloc(1, GB_CLEAR);
-        }
-    }
-
+    m->cwd = getcwd(NULL, 0);
     if (argc != 2)
     {
         printf("Usage: %s <command>\n", argv[0]);
         return 1;
     }
+
+    
+
     char *line = argv[1];
     t_data *d = ft_initialize_data(line, m);
     if (!d)
@@ -149,5 +133,5 @@ int main(int argc, char **argv, char **env)
         return 1;
     }
     _print_data(d);
-    ft_malloc(1, 1);
+    ft_malloc(1, GB_CLEAR);
 }

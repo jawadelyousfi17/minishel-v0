@@ -31,11 +31,7 @@ int ft_is_operator(t_token *token)
     return 0;
 }
 
-int ft_is_op_space(t_token *token)
+int ft_is_op_space(t_token *t)
 {
-    if (token->type == PIPE || token->type == REDIRECT_INPUT || token->type == REDIRECT_OUTPUT || token->type == APPEND || token->type == HERE_DOC || token->type == SPACES)
-        return 1;
-    return 0;
+    return (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT || t->type == APPEND || t->type == PIPE || t->type == SPACES || t->type == HERE_DOC);
 }
-
-

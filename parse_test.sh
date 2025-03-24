@@ -397,11 +397,11 @@ if [ "$total_failures" -ne 0 ]; then
   echo -e "${COLOR_RED}Total failures: $total_failures${COLOR_RESET}"
   echo -e "\n${COLOR_YELLOW}Failed Tests Details:${COLOR_RESET}"
   
-#   for ((i=0; i<${#failed_tests_numbers[@]}; i++)); do
-#     echo -e "${COLOR_RED}Failed Test #${failed_tests_numbers[$i]}${COLOR_RESET}"
-#     echo -e "${failed_tests_details[$i]}"
-#     echo ""
-#   done
+  for ((i=0; i<${#failed_tests_numbers[@]}; i++)); do
+    echo -e "${COLOR_RED}Failed Test #${failed_tests_numbers[$i]}${COLOR_RESET}"
+    echo -e "${failed_tests_details[$i]}"
+    echo ""
+  done
 else
   echo -e "${COLOR_GREEN}All tests passed successfully!${COLOR_RESET}"
 fi

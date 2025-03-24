@@ -30,6 +30,7 @@ t_token *ft_tokenize_input(char *s)
             return (NULL);
         current = ft_add_token_current(&tokens, current, new);
     }
+    
     return (tokens);
 }
 
