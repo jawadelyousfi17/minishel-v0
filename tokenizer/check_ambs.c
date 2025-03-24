@@ -2,7 +2,7 @@
 
 /**
  * to test: 1/2
- * done: raw value && fix ambs right doing #done
+ * done: raw value && fix ambs right ✅done
  */
 
 char *ft_join_raw_value(t_token *t)
@@ -90,7 +90,7 @@ int check_ambs(t_token *tokens)
 	{
 		if (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT || t->type == APPEND)
 		{
-			t_token *new_t = ft_split_file_name(t->next);
+			t_token *new_t = ft_split_var_file_name(t->next);
 			if (!new_t || check_space_or_empty(new_t))
 			{
 				t->is_ambs = 1;

@@ -1,9 +1,9 @@
 #include "../include/minishell.h"
 
 /**
- * to test:
+ * to test: 1/2
  * To fix: handle empty vars  ✅done
- * to fix: handle ambs raw value #doing
+ * to fix: handle ambs raw value ✅done
 */
 
 

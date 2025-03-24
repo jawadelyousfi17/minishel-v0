@@ -1,5 +1,10 @@
 #include "../include/minishell.h"
 
+/**
+ * to test: 0/2
+ * To fix: change method name doing
+ */
+
 static char *create_tmp()
 {
     int i;
@@ -22,52 +27,53 @@ static char *create_tmp()
     return (NULL);
 }
 
-static void read_line(char *limiter, int is_qt, t_minishell *m, char **r)
+static int ft_read_to_fd(int fd, char *limiter, t_minishell *m, int is_qt)
 {
     char *line;
-    char *nl;
+    char *r;
 
     while (1)
     {
         line = readline("> ");
-        if (!line)
-            break;
-        if (is_equal(line, limiter))
+        if (!line || is_equal(line, limiter))
         {
             free(line);
             break;
         }
-        nl = ft_strjoin(line, "\n", 0);
+        r = ft_strdup(line, 0);
+        if (!is_qt && *line)
+            r = ft_expand_here_doc(line, m);
         free(line);
-        if (!is_qt)
-            nl = ft_expand_here_doc(nl, m);
-        *r = ft_strjoin(*r, nl, 0);
-        if (*r == NULL || nl == NULL)
-            return ;
+        if (r == NULL)
+            return 0;
+        if (write(fd, r, ft_strlen(r)) < 0 || write(fd, "\n", 1) < 0)
+            return 0;
     }
-    if (!*r)
-        *r = ft_strdup("", 0);
+    return 1;
 }
 
 static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishell *m)
 {
     int fd;
+    int return_fd;
     char *r;
+    char *file_name;
 
-    r = NULL;
-    read_line(limiter, is_qt, m, &r);
-    if (r == NULL)
+    file_name = create_tmp();
+    if (file_name == NULL)
         return -1;
-    fd = open(file_path, O_CREAT | O_RDWR , 0644);
+    fd = open(file_name, O_CREAT | O_RDWR, 0644);
     if (fd < 0)
         return -1;
-    if (write(fd, r, ft_strlen(r)) < 0)
-        return -1;
+    return_fd = open(file_name, O_RDONLY, 0644);
+    if (return_fd < 0)
+        return (close(fd), -1);
+    if (unlink(file_name) == -1)
+        return (close(fd), close(return_fd), -1);
+    if (!ft_read_to_fd(fd, limiter, m, is_qt))
+        return (close(fd), close(return_fd), -1);
     close(fd);
-    fd = open(file_path, O_RDONLY);
-    if (unlink(file_path) < 0)
-        return -1;
-    return fd;
+    return return_fd;
 }
 
 int ft_execute_files(t_files **f, t_minishell *m)
@@ -101,7 +107,7 @@ int ft_execute_heredoc(t_data *d, t_minishell *m)
     char *file_path;
     int fd;
     t_list *d1;
-    
+
     if (d->pipe)
     {
         d1 = d->pipe_cmd;
