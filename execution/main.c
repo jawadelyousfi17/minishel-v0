@@ -298,8 +298,14 @@ int main(int c, char **v, char **env)
     struct sigaction sig;
     struct termios original;
     t_data *data;
+    int e_code;
     char *input;
 
+    if (!isatty(0))
+    {
+        printf("minishell only work in interractive mode\n");
+        return (1);
+    }
     // atexit(f);
     tcgetattr(STDIN_FILENO, &original);
     set_terminal(original);
@@ -308,23 +314,11 @@ int main(int c, char **v, char **env)
     sig.sa_flags = 0;
     sigaction(SIGINT, &sig, NULL);
 
-    char **new_env = gb_get_all_env(env); // check env -i
+    char **new_env = gb_get_all_env(env);
     t_minishell *m = malloc(sizeof(t_minishell));
     m->env = &new_env;
     m->exit_code = 0;
     m->cwd = getcwd(NULL, 0);
-    if (!isatty(0))
-    {
-        input = readline(NULL);
-        m->data = ft_initialize_data(input, m);
-        process(m);
-        free(input);
-        ft_malloc(0, 1);
-        restore_terminal(original);
-        ft_free_env(*(m->env));
-        free(m);
-        exit(m->exit_code);
-    }
     while (1)
     {
         g_sigint_received = 0;
@@ -342,7 +336,7 @@ int main(int c, char **v, char **env)
                     continue;
                 }
                 process(m);
-                ft_malloc(0, 1);
+                // ft_malloc(0, 1);
                 free(input);
             }
             else
@@ -355,9 +349,11 @@ int main(int c, char **v, char **env)
         else
             ;
     }
-    // ft_malloc(0,1);
+    ft_malloc(0,1);
     restore_terminal(original);
     ft_free_env(*(m->env));
+    e_code = m->exit_code;
+    free(m->cwd);
     free(m);
-    return (m->exit_code);
+    return (e_code);
 }
