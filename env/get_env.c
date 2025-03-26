@@ -23,3 +23,24 @@ char *gb_get_env(char **env, char *var)
     }
     return NULL;
 }
+
+/**
+ * @brief Get the value of an environment variable from the environment 
+ * 
+ * no need to free the return value
+ * 
+ * @param env The environment
+ * @param var The variable to get
+ * @return char* The value of the variable
+ */
+char *ft_get_env(char **env, char *var)
+{
+    char *value;
+    char *tmp;
+    tmp = gb_get_env(env, var);
+    if (!tmp)
+        return NULL;
+    value = ft_strdup(tmp, GB_C);
+    free(tmp);
+    return value;
+}

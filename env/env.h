@@ -12,3 +12,4 @@ char *gb_get_env(char **env, char *var);
 char **gb_get_all_env(char **env);
 void ft_sort(char **env);
 size_t ft_max(size_t a, size_t b);
+char *ft_get_env(char **env, char *var);

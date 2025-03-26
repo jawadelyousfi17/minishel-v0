@@ -17,7 +17,7 @@ gb_obj = $(gb_src:.c=.o)
 env_obj = $(env_src:.c=.o)
 builtin_obj = $(builtin_src:.c=.o)
 utils_obj = $(utils:.c=.o)
-readline = -lreadline -L ~/Desktop/readline/lib
+readline = -lreadline # -L ~/Desktop/readline/lib
 
 all : $(NAME)
 
@@ -29,6 +29,13 @@ test : $(test_obj) $(parser_objs) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_ob
 test/%.o : test/%.c include/minishell.h
 	cc $(FLAGS) -c $< $(rdl_include) -o $@
 # test
+# env_test
+env_test_src = tests/env_test.c
+env_test_obj = $(env_test_src:.c=.o)
+env_test : $(env_test_obj) $(parser_objs) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
+	cc $(FLAGS)  $(parser_objs) $(env_test_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline)  -o test_env
+
+# env_test
 
 
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 

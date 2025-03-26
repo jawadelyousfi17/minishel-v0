@@ -77,12 +77,18 @@ char **gb_get_all_env(char **env)
         ft_set_env(&new_env, "SHLVL", "1");
         return new_env;
     }
-    if (ft_atoi(lvl) == 999)
+    if (ft_atoi(lvl) >= 999)
     {
-        printf("minishell: warning: shell level (999) too high, resetting to 1\n");
+        printf("minishell: warning: shell level %d too high, resetting to 1\n", ft_atoi(lvl));
         hl_ft_unset("SHLVL", &new_env);
         free(lvl);
         return new_env;
+    }
+    else if (ft_atoi(lvl) < 0)
+    {
+        hl_ft_unset("SHLVL", &new_env);
+        free(lvl);
+        return new_env; 
     }
     else
         lvl_value = ft_itoa(ft_atoi(lvl) + 1,0);
