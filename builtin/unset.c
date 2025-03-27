@@ -15,20 +15,6 @@ int ft_matrix_len(char **matrix)
     return i;
 }
 
-int ft_is_valid_identifier(char *s)
-{
-    if (!*s || !ft_strchr(VALID_START, *s))
-        return 0;
-    s++;
-    while (*s)
-    {
-        if (!ft_strchr(VALID, *s))
-            return 0;
-        s++;
-    }
-    return 1;
-}
-
 int gb_hl_remove_var(char ***env, int index)
 {
     char **new_env;
