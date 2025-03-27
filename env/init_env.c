@@ -89,9 +89,9 @@ char **gb_get_all_env(char **env)
     char *lvl_value;
     char *lvl;
 
-    new_env = ft_copy_env(env);
-    if (!*new_env)
+    if (!*env)
         return ft_create_env();
+    new_env = ft_copy_env(env);
     lvl = gb_get_env(new_env, "SHLVL");
     if (!lvl || ft_atoi(lvl) >= 999 || ft_atoi(lvl) < 0)
        return ft_set_lvl(&new_env, lvl);
