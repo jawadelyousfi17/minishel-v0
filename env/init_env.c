@@ -41,7 +41,7 @@ char **ft_copy_env(char **env)
     return env_cpy;
 }
 
-char **ft_create_env()
+char **ft_create_env(void)
 {
     char **env;
     char *path;
@@ -51,14 +51,17 @@ char **ft_create_env()
     env[0] = NULL;
     if (!env)
         return NULL;
-    ft_set_env(&env, "PATH", DEFAULT_PATH);
+    if (ft_set_env(&env, "PATH", DEFAULT_PATH) == -1)
+        return ft_free_env(env);
     pwd = getcwd(NULL, 0);
     if (!pwd)
         return ft_free_env(env);
-    ft_set_env(&env, "PWD", ft_strdup(pwd, 0));
+    if (ft_set_env(&env, "PWD", ft_strdup(pwd, 0)) == -1)
+        return ft_free_env(env);
     free(pwd);
-    ft_set_env(&env, "SHLVL", "1");
-    ft_set_env(&env, "OLDPWD", NULL);
+    if (ft_set_env(&env, "SHLVL", "1") == -1
+        || ft_set_env(&env, "OLDPWD", NULL) == -1)
+        return ft_free_env(env);
     return env;
 }
 
@@ -77,7 +80,6 @@ char **ft_set_lvl(char ***new_env, char *lvl)
            return ft_free_env(*new_env);
         return *new_env;
     }
-    free(lvl);
     return *new_env;
 }
 
@@ -88,8 +90,8 @@ char **gb_get_all_env(char **env)
     char *lvl;
 
     new_env = ft_copy_env(env);
-    if (!new_env)
-        return NULL;
+    if (!*new_env)
+        return ft_create_env();
     lvl = gb_get_env(new_env, "SHLVL");
     if (!lvl || ft_atoi(lvl) >= 999 || ft_atoi(lvl) < 0)
        return ft_set_lvl(&new_env, lvl);

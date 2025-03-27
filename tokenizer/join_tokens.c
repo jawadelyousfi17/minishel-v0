@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-int	ft_do_stuff(t_token **tk)
+int	join_txt(t_token **tk)
 {
 	char	*r;
 	t_token	*tmp;
@@ -31,9 +31,7 @@ void	ft_remove_spaces(t_token **tokens)
 	while (t)
 	{
 		if (t->type == SPACES || t->type == EXPAND)
-		{
 			ft_remove_token(tokens, t);
-		}
 		if (t)
 			t = t->next;
 	}
@@ -48,7 +46,7 @@ int	ft_join_tokens(t_token **tokens)
 	{
 		if (t->type == TEXT)
 		{
-			if (!ft_do_stuff(&t))
+			if (!join_txt(&t))
 				return (0);
 		}
 		if (t)

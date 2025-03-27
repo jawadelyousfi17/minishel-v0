@@ -31,7 +31,7 @@ t_data	*ft_initialize_data(char *line, t_minishell *m)
 	if (!line || ft_strlen(line) == 0)
 		return (NULL);
 	if (check_unclosed_quotes(line))
-		return (er4("unclosed quotes", 0, 0, 0), NULL);
+		return (er4("syntax error: unclosed quotes", 0, 0, 0), NULL);
 	tokens = ft_tokenize_input(line);
 	if (!tokens)
 		return (er4("Error: ", strerror(errno), 0, 0), NULL);
