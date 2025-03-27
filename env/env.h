@@ -1,4 +1,4 @@
-#define DEFAULT_PATH "/mnt/homes/zbouchra/.docker/bin:/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."
+#define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 int ft_set_env(char ***env, char *var, char *value);
 char **ft_copy_env(char **env);
