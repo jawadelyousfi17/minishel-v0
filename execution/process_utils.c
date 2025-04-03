@@ -7,17 +7,16 @@ void	if_not_found(t_data *data)
 	exit(127);
 }
 
-void	if_execve_failed(t_data *data,char *cmd)
+void	if_execve_failed(t_data *data,char *cmd,t_minishell *m)
 {
 	char *str;
 
-	str = ft_strdup("misnishell: ",0);
-	if(!str)
-		ft_perr();
-	str = ft_strjoin(str,cmd,0);
-	if(!str)
-		ft_perr();
-	perror(str);
+	if(errno == ENOEXEC)
+	{
+		execve("/bin/sh", (char *[]){"/bin/sh", cmd, NULL}, *(m->env));
+		return ;
+	}
+	er4(cmd,": ",strerror(errno),NULL);
 	exit(127);
 }
 

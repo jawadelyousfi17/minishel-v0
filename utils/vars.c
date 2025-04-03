@@ -1,6 +1,13 @@
 #include "utils.h"
 
+int change_exit_code(int e_code,int flag)
+{
+    static int exit_code;
 
+    if(flag)
+        exit_code = e_code;
+    return (exit_code);
+}
 
 
 char *ft_getenv(char *name, t_minishell *m)
@@ -10,7 +17,7 @@ char *ft_getenv(char *name, t_minishell *m)
 
     if (is_equal(name, "?"))
     {
-        var_val = ft_itoa(m->exit_code, GB_C);
+        var_val = ft_itoa(change_exit_code(0,0), GB_C);
         if (!var_val)
             return NULL;
         return var_val;

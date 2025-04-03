@@ -1,10 +1,5 @@
 #include "../include/minishell.h"
 
-/**
- * to test
- * to fix when the arg is not a valid identifier
- */
-
 int ft_matrix_len(char **matrix)
 {
     int i;
@@ -13,6 +8,20 @@ int ft_matrix_len(char **matrix)
     while (matrix[i])
         i++;
     return i;
+}
+
+int ft_is_valid_identifier(char *s)
+{
+    if (!*s || !ft_strchr(VALID_START, *s))
+        return 0;
+    s++;
+    while (*s)
+    {
+        if (!ft_strchr(VALID, *s))
+            return 0;
+        s++;
+    }
+    return 1;
 }
 
 int gb_hl_remove_var(char ***env, int index)
@@ -47,7 +56,9 @@ int hl_ft_unset(char *var_name, char ***env)
     int i;
 
     if (var_name == NULL)
-        return(er4("unset: can't unset", NULL, NULL, NULL), 1);
+        return(er4(": unset: can't unset", NULL, NULL, NULL), 1);
+    if (!ft_is_valid_identifier(var_name))
+        return(er4(": unset: `", var_name , "': not a valid identifier", NULL), 1);
     i = 0;
     while ((*env)[i])
     {
@@ -55,8 +66,8 @@ int hl_ft_unset(char *var_name, char ***env)
         {
             if (!gb_hl_remove_var(env, i))
             {
-               er4("Error: ", strerror(errno), NULL, NULL);
-               er4("unset: can't unset: `", var_name, "'", NULL);
+               er4(": unset: ", strerror(errno), NULL, NULL);
+               er4(": unset: can't unset: `", var_name, "'", NULL);
                 return 1;
             }
             return 0;
@@ -72,7 +83,7 @@ int ft_unset(char **args, char ***env)
     int err;
 
     if (args == NULL)
-        return(er4("unset: can't unset", NULL, NULL, NULL), 1);
+        return(er4(": unset: can't unset", NULL, NULL, NULL), 1);
     i = 1;
     err = 0;
     while (args[i])

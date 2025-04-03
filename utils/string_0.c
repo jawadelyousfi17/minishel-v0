@@ -58,3 +58,28 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (t1[i] - t2[i]);
 	return (0);
 };
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	while (i < len && haystack[i])
+	{
+		if (haystack[i] == needle[0])
+		{
+			j = 0;
+			while (needle[j] == haystack[i + j] && (i + j) < len && needle[j]
+				&& haystack[i + j])
+				j++;
+			if (needle[j] == '\0')
+				return ((char *)&haystack[i]);
+		}
+		i++;
+	}
+	return (NULL);
+}

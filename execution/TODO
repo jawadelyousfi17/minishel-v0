@@ -1,0 +1,8 @@
+
+bash-3.2$
+max heredocument should behave like bash
+
+exit_code error parsing 
+ctrl + c in heredoc
+---------------------------
+norm

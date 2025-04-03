@@ -1,12 +1,5 @@
 #include "../include/minishell.h"
 
-// garbage collector struct
-// typedef struct s_collect
-// {
-//     void *content;
-//     struct s_collect *next;
-// } t_collect;
-
 t_collect *add_back(t_collect *current, t_collect *new)
 {
     current->next = new;
@@ -40,26 +33,32 @@ void *ft_clear(t_collect **head)
     return NULL;
 }
 
+void *ft_malloc_(t_collect **head, t_collect **current, size_t size)
+{
+    void *ptr;
+
+    ptr = malloc(size);
+    if (!ptr)
+        return NULL;
+    *head = new_node(ptr);
+    if (!*head)
+        return ft_clear(head);
+    if (!(*head)->content)
+        return NULL;
+    *current = *head;
+    return NULL;
+}
+
 void *ft_malloc(size_t size, int flag)
 {
     static t_collect *current;
     static t_collect *head;
-    void *ptr;
+    
 
     if (flag == 0)
     {
         if (head == NULL)
-        {
-            ptr = malloc(size);
-            if (!ptr)
-                return NULL;
-            head = new_node(ptr);
-            if (!head)
-                return ft_clear(&head);
-            if (!head->content)
-                return NULL;
-            current = head;
-        }
+            ft_malloc_(&head, &current, size);
         else
         {
             current = add_back(current, new_node(malloc(size)));

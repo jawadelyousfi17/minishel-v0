@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-
+#include <termios.h>
 #include "../env/env.h"
 
 // Garbage collector
@@ -80,10 +80,12 @@ typedef struct s_minishell
     int flag;
     char *cwd;
     t_data *data;
+    struct termios original;
 } t_minishell;
 
+int change_exit_code(int e_code,int flag);
 char *ft_strtrim(char const *s1, char const *set, int flag);
-int ft_atoi(const char *nptr);
+int ft_atoi(char *nptr, int *err);
 char *ft_substr(char const *s, unsigned int start, size_t len, int flag);
 char *ft_strdup(const char *s, int flag);
 char *ft_strjoin(const char *s1, const char *s2, int flag);
@@ -91,6 +93,7 @@ size_t ft_strlen(const char *s);
 char *ft_strchr(const char *s, int c);
 int ft_isalpha(int c);
 int ft_isalnum(int c);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strndup(char *s, size_t len, int flag);
 int is_equal(char *s, char *p);
