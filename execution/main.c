@@ -220,7 +220,7 @@ void exec_non_builtin(t_minishell *m,char *cmd_path)
 }
 void handle_signal(t_minishell *m)
 {
-    if(ft_strnstr(m->data->cmd[0],"minishell",ft_strlen(m->data->cmd[0])))
+    if(m->data->cmd && ft_strnstr(m->data->cmd[0],"minishell",ft_strlen(m->data->cmd[0])))
         signal(SIGINT, &child_minishell_handler);
     else
     {

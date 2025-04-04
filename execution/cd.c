@@ -24,6 +24,7 @@ int home_case(t_minishell *m)
         return(perror("minishell"),1);
     return (0);
 }
+
 int normal_case_arg(t_data *data,t_minishell *m)
 {
     if (chdir(data->cmd[1]) < 0)
@@ -41,6 +42,7 @@ int normal_case_arg(t_data *data,t_minishell *m)
         return(perror("minishell"),1);
     return (0);
 }
+
 int get_current_wd(t_minishell *m)
 {
     char *cwd;
