@@ -1,6 +1,7 @@
 *.o
 a.out
-./minishell
+minishell
 ./test
 execution/*.o
+
 
