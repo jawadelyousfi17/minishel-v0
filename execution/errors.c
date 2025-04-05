@@ -46,6 +46,6 @@ void	ft_close(int fd[2][2])
 
 void	ft_exit_failure_pipe(void)
 {
-	perror("minishell");
-	exit(1);
+	er4("pipe :",strerror(errno),NULL,NULL);
+	change_exit_code(1,1);
 }

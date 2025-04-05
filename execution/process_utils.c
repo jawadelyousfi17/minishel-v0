@@ -34,3 +34,13 @@ void	ft_close_single_pipe(int fd[2])
 	close(fd[0]);
 	close(fd[1]);
 }
+
+void ft_error(char *file, int fd)
+{
+    if (file)
+        er4(file, ": ", strerror(errno), NULL);
+    else
+        perror("minishell");
+    close(fd);
+    exit(1);
+}

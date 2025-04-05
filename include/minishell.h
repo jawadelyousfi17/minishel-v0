@@ -12,10 +12,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
-#include "../utils/utils.h"
+// #include "../utils/utils.h"
 #include <limits.h>
 #include <errno.h>
-// extern volatile sig_atomic_t g_sigint_received;
+
 typedef struct s_redirect
 {
     int in;
@@ -108,28 +108,25 @@ void	last_process(int fd[2][2], t_data *data, t_minishell *m,int i);
 void	process_in_middle_odd( int fd[2][2], t_data *data, t_minishell *m);
 void	process_in_middle_even(int fd[2][2], t_data *data, t_minishell *m);
 void exec_pipe(t_minishell *m);
-int ft_cd(t_data *data,t_minishell *m);
+int exec_builtins(t_data *data, t_minishell *m);
+void exec_one(t_minishell *m);
+void redirection(t_data *data, t_minishell *m);
+t_redirect redirection_builtins(t_data *data, t_minishell *m);
 void	handle_sigint(int sig);
 void	handle_quit(int signal);
 void heredoc_sig(int sig);
 int ft_perr_builtin(int err_code, char *arg);
 int ft_close_hd_utils(t_files **f);
-int ft_pwd(t_minishell *m);
+void ft_error(char *file, int fd);
 void	dup_and_close(int in, int out, int fd[2][2]);
 void redirection(t_data *data,t_minishell *m);
 void	close_exit(int exit_status, int fd[2][2], char *arg);
 void	ft_close(int fd[2][2]);
 void	ft_exit_failure_pipe(void);
 void *ft_malloc(size_t size,int flag);
-int ft_exit_(t_data *data,t_minishell *m);
 void	child_handler(int sig);
 void	child_minishell_handler(int sig);
-void clear_bf_exit(t_minishell *m);
-// void	process_in_middle(int fd[2], t_data *data, char **env);
 
-// PARSER
 
-// split a string s by charset ch
-char	**ft_split_parser(char const *s, char *ch);
 
 #endif

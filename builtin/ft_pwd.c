@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/05 17:49:45 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 17:49:46 by zbouchra         ###   ########.fr       */
+/*   Created: 2025/04/05 17:49:29 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 17:49:30 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char *gb_get_env(char **env, char *var)
+int ft_pwd(t_minishell *m)
 {
-    int i;
-    char *tmp;
+    char *cwd;
 
-    i = 0;
-    if (var == NULL)
-        return NULL;
-    while (env[i])
+    cwd = getcwd(NULL, 0);
+    if (cwd)
     {
-        tmp = ft_extract_var(env[i]);
-        if (tmp == NULL)
-            return NULL;
-        if (is_equal(tmp, var))
+        if (printf("%s\n", cwd) < 0)
         {
-            if (ft_strchr(env[i], '=') == NULL)
-                return NULL;
-            return ft_strdup(env[i] + ft_strlen(tmp) + 1, NO_GB);
+            er4(": pwd: ", strerror(errno), NULL, NULL);
+            free(cwd);
+            return (1);
         }
-        i++;
     }
-    return NULL;
+    else if (printf("%s\n", m->cwd) < 0)
+    {
+        er4(": pwd: ", strerror(errno), NULL, NULL);
+        return (1);
+    }
+    free(cwd);
+    return (0);
 }

@@ -1,20 +1,25 @@
 #include "../include/minishell.h"
 
-void	alloc_fds_change_sigh(int *i, int fd[2][2])
+int	alloc_fds_change_sigh(int *i, int fd[2][2])
 {
 	*i = 0;
 	if (pipe(fd[0]) < 0)
+	{
 		ft_exit_failure_pipe();
+		return (-1);
+	}
 	if (pipe(fd[1]) < 0)
 	{
 		ft_close_single_pipe(fd[0]);
 		ft_exit_failure_pipe();
+		return (-1);
 	}
 	signal(SIGINT, &child_handler);
 	signal(SIGQUIT, &handle_quit);
+	return (0);
 }
 
-void	close_between_processes(int fd[2][2], int i)
+int	close_between_processes(int fd[2][2], int i)
 {
 	if (i % 2 == 0)
 	{
@@ -23,6 +28,7 @@ void	close_between_processes(int fd[2][2], int i)
 		{
 			ft_close_single_pipe(fd[0]);
 			ft_exit_failure_pipe();
+			return (-1);
 		}
 	}
 	else
@@ -32,8 +38,10 @@ void	close_between_processes(int fd[2][2], int i)
 		{
 			ft_close_single_pipe(fd[1]);
 			ft_exit_failure_pipe();
+			return (-1);
 		}
 	}
+	return (0);
 }
 
 void err_fork(int fd[2][2])
@@ -62,7 +70,11 @@ pid_t loop_pipe(int fd[2][2], t_minishell *m,t_list *tmp, int i)
 		process_in_middle_odd(fd,(t_data *)(tmp->content), m);
 	else if (pid == 0 && (i % 2) == 0)
 		process_in_middle_even(fd,(t_data *)(tmp->content), m);
-	close_between_processes(fd, i);
+	if(close_between_processes(fd, i) < 0)
+	{
+		ft_close(fd);
+		return -1;
+	}
 	return pid;
 }
 
@@ -75,7 +87,8 @@ void exec_pipe(t_minishell *m)
 	t_list	*tmp;
 	
     tmp = m->data->pipe_cmd;
-	alloc_fds_change_sigh(&i,fd);
+	if(alloc_fds_change_sigh(&i,fd) < 0)
+		return ;
 	while (i < m->data->n_of_cmds)
 	{
 		pid = loop_pipe(fd, m, tmp, i);
