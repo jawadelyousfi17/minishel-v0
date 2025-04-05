@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static int ft_close_hd_utils(t_files **f)
+int ft_close_hd_utils(t_files **f)
 {
     int i;
 

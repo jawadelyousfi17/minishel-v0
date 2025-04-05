@@ -97,7 +97,6 @@ int ft_execute_heredoc(t_data *d, t_minishell *m);
 // initialize the data
 t_data *ft_initialize_data(char *line, t_minishell *m);
 
-
 void ft_perr(t_minishell *m);
 char	*process_helper(t_data *data,t_minishell *m);
 int    exec_builtins(t_data *data,t_minishell *m);
