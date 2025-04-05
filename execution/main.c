@@ -315,6 +315,14 @@ t_minishell *init_mini(char **env,char ***new_env)
     }
     return (m);
 }
+
+void reset_after_cmd(t_minishell *m,char *input)
+{
+    ft_malloc(0, 1);
+    free(input);
+    tcsetattr(STDIN_FILENO, TCSANOW, &(m->original));
+}
+
 void main_loop(t_minishell *m)
 {
     char *input;
@@ -332,6 +340,7 @@ void main_loop(t_minishell *m)
             if (!m->data)
             {
                 free(input);
+                tcsetattr(STDIN_FILENO, TCSANOW, &(m->original));
                 continue;
             }
             process(m);
