@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_4.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:12:17 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:25:06 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
-
-static int	count_words(char const *str, char c)
+static int	cw(char const *str, char c)
 {
 	int	in_word;
 	int	counter;
@@ -35,26 +46,26 @@ static char	**zero_last(char **splited_strings, int index)
 char	**ft_split(char const *s, char c, int flag)
 {
 	char	**splited_string;
-	int		start_index;
+	int		st;
 	int		index;
 
 	if (!s)
 		return (NULL);
 	index = 0;
-	start_index = 0;
-	splited_string = (char **)ft_malloc((count_words(s, c) + 1) * sizeof(char *), flag);
+	st = 0;
+	splited_string = (char **)ft_malloc((cw(s, c) + 1) * sizeof(char *), flag);
 	if (!splited_string)
 		return (NULL);
 	while (s && *s)
 	{
-		start_index = 0;
+		st = 0;
 		while (*s && *s == c)
 			s++;
 		if (!*s)
 			break ;
-		while (*s && *s != c && ++start_index)
+		while (*s && *s != c && ++st)
 			s++;
-		splited_string[index] = ft_substr(s - start_index, 0, start_index, flag);
+		splited_string[index] = ft_substr(s - st, 0, st, flag);
 		if (!splited_string[index++])
 			return (NULL);
 	}

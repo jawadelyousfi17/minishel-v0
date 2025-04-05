@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:11:13 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:28:45 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 int	ft_skip(char *str, int *i, int *sign)
@@ -37,7 +49,7 @@ int	get_number(char *str, int i, int sign, long *res)
 	return (1);
 }
 
-int	ft_atoi(char *str,int *err)
+int	ft_atoi(char *str, int *err)
 {
 	int		sign;
 	int		i;
@@ -47,13 +59,13 @@ int	ft_atoi(char *str,int *err)
 	res = 0;
 	i = 0;
 	ft_skip(str, &i, &sign);
-	if(get_number(str, i, sign, &res) <= 0)
+	if (get_number(str, i, sign, &res) <= 0)
 	{
-		if(err)
+		if (err)
 			*err = 1;
-		return(0);
+		return (0);
 	}
-	if(res >= 2147483647 || res <= -2147483648)
+	if (res >= 2147483647 || res <= -2147483648)
 		return (-1);
-	return(res * sign);
+	return (res * sign);
 }

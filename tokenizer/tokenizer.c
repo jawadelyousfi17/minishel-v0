@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:12:45 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:12:46 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-t_token *ft_new_util(char **s)
+t_token	*ft_new_util(char **s)
 {
-	t_token *new;
+	t_token	*new;
 
 	if (**s == ' ' || **s == '\t')
 		new = ft_tokenize_space(s);
@@ -23,11 +35,11 @@ t_token *ft_new_util(char **s)
 	return (new);
 }
 
-t_token *ft_tokenize_input(char *s)
+t_token	*ft_tokenize_input(char *s)
 {
-	t_token *tokens;
-	t_token *current;
-	t_token *new;
+	t_token	*tokens;
+	t_token	*current;
+	t_token	*new;
 
 	tokens = NULL;
 	while (*s)

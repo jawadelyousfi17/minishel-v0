@@ -1,16 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_0.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:11:22 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:27:02 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
-size_t ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-    const char *current = s;
+	const char	*current = s;
 
-    if (!s)
-        return 0;
-
-    while (*current)
-        current++;
-
-    return current - s;
+	if (!s)
+		return (0);
+	while (*current)
+		current++;
+	return (current - s);
 }
 
 char	*ft_strjoin(const char *s1, const char *s2, int flag)
@@ -39,13 +49,12 @@ char	*ft_strjoin(const char *s1, const char *s2, int flag)
 	return (joined);
 }
 
-
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned char	*t1;
 	unsigned char	*t2;
 	size_t			i;
+	size_t			j;
 
 	i = 0;
 	t1 = (unsigned char *)s1;
@@ -57,12 +66,12 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	if (i < n)
 		return (t1[i] - t2[i]);
 	return (0);
-};
+}
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;

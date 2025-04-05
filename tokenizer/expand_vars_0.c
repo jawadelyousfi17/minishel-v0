@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_vars_0.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:13:04 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:13:05 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	ft_handle_here_doc_var(t_token *t)
@@ -29,8 +41,8 @@ int	ft_handle_redirection_var(t_token *t, t_minishell *m)
 {
 	while (t)
 	{
-		if (t->type == REDIRECT_INPUT
-			|| t->type == REDIRECT_OUTPUT || t->type == APPEND)
+		if (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT
+			|| t->type == APPEND)
 		{
 			t = t->next;
 			if (t->type == SPACES)

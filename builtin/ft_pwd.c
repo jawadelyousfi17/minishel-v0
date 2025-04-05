@@ -12,25 +12,25 @@
 
 #include "../include/minishell.h"
 
-int ft_pwd(t_minishell *m)
+int	ft_pwd(t_minishell *m)
 {
-    char *cwd;
+	char	*cwd;
 
-    cwd = getcwd(NULL, 0);
-    if (cwd)
-    {
-        if (printf("%s\n", cwd) < 0)
-        {
-            er4(": pwd: ", strerror(errno), NULL, NULL);
-            free(cwd);
-            return (1);
-        }
-    }
-    else if (printf("%s\n", m->cwd) < 0)
-    {
-        er4(": pwd: ", strerror(errno), NULL, NULL);
-        return (1);
-    }
-    free(cwd);
-    return (0);
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		if (printf("%s\n", cwd) < 0)
+		{
+			er4(": pwd: ", strerror(errno), NULL, NULL);
+			free(cwd);
+			return (1);
+		}
+	}
+	else if (printf("%s\n", m->cwd) < 0)
+	{
+		er4(": pwd: ", strerror(errno), NULL, NULL);
+		return (1);
+	}
+	free(cwd);
+	return (0);
 }

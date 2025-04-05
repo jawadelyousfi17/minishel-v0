@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_1.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:11:25 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:11:26 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 char	*ft_strdup(const char *s, int flag)
 {
-	size_t		size;
-	size_t		index;
-	char		*new_s;
+	size_t	size;
+	size_t	index;
+	char	*new_s;
 
 	size = ft_strlen(s);
 	new_s = (char *)ft_malloc((sizeof(char) * (size + 1)), flag);
@@ -35,10 +47,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, int flag)
 {
 	size_t		index;
 	char		*substring;
+	static int	t;
 
-	static int t;
 	t++;
-
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
@@ -86,7 +97,7 @@ char	*ft_strchr(const char *s, int c)
 	if (!s)
 		return (NULL);
 	t = (char *)s;
-	c = (char) c;
+	c = (char)c;
 	while (*t)
 	{
 		if (*t == c)
@@ -97,7 +108,3 @@ char	*ft_strchr(const char *s, int c)
 		return (t);
 	return (NULL);
 }
-
-
-
-

@@ -1,26 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_here_doc.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:13:12 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:13:13 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
-
-static char	*genrete_file_name(void)
-{
-	int		i;
-	char	*file_path;
-	char	*n;
-
-	i = 0;
-	while (1)
-	{
-		n = ft_itoa(i, GB_C);
-		if (n == NULL)
-			return (NULL);
-		file_path = ft_strjoin("/tmp/.minishel_", n, 0);
-		if (file_path == NULL)
-			return (NULL);
-		if (access(file_path, F_OK) != 0)
-			return (file_path);
-		i++;
-	}
-	return (NULL);
-}
 
 static int	ft_read_to_fd(int fd, char *limiter, t_minishell *m, int is_qt)
 {

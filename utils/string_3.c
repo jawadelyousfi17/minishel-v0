@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_3.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:11:32 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:25:46 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 static int	get_int_size(long int n)
@@ -17,9 +29,9 @@ static int	get_int_size(long int n)
 
 char	*ft_itoa(int n, int flag)
 {
-	long int	nbr;
-	int			nbr_size;
-	char		*result;
+	long	nbr;
+	int		nbr_size;
+	char	*result;
 
 	nbr = n;
 	nbr_size = get_int_size(nbr);

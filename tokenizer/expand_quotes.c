@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:13:06 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:13:07 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	ft_handle_txt(char **s, t_list **h)
@@ -60,8 +72,8 @@ char	*expand_quote(char *s, t_minishell *m)
 		return (s);
 	while (*s)
 	{
-		if (*s == '$' && (ft_isalpha(*(s + 1))
-				|| *(s + 1) == '_' || *(s + 1) == '?'))
+		if (*s == '$' && (ft_isalpha(*(s + 1)) || *(s + 1) == '_' || *(s
+					+ 1) == '?'))
 		{
 			if (!ft_handle_var(&s, &head, m))
 				return (NULL);

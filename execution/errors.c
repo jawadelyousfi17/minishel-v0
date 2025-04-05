@@ -1,25 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:14:29 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:35:59 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-void ft_perr(t_minishell *m)
+void	ft_perr(t_minishell *m)
 {
 	clear_bf_exit(m);
 	perror("minishell");
 	exit(1);
 }
-int ft_perr_builtin(int err_code, char *arg)
+
+int	ft_perr_builtin(int err_code, char *arg)
 {
 	if (arg)
-		er4(arg,": ",strerror(errno),NULL);
-	else 
+		er4(arg, ": ", strerror(errno), NULL);
+	else
 		perror("minishell");
-	change_exit_code(err_code,1);
-	return(err_code);
+	change_exit_code(err_code, 1);
+	return (err_code);
 }
 
 void	close_exit(int exit_status, int fd[2][2], char *arg)
 {
 	if (arg)
-		er4(arg,": ",strerror(errno),NULL);
+		er4(arg, ": ", strerror(errno), NULL);
 	else
 		perror("minishell");
 	ft_close(fd);
@@ -46,6 +59,6 @@ void	ft_close(int fd[2][2])
 
 void	ft_exit_failure_pipe(void)
 {
-	er4("pipe :",strerror(errno),NULL,NULL);
-	change_exit_code(1,1);
+	er4("pipe :", strerror(errno), NULL, NULL);
+	change_exit_code(1, 1);
 }

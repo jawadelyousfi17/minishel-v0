@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_here_doc.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:13:09 by zbouchra          #+#    #+#             */
+/*   Updated: 2025/04/05 18:13:10 by zbouchra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	ft_add_var(t_list **h, char **s, t_minishell *m)
@@ -55,8 +67,8 @@ t_list	*ft_split_by_var(char *s, t_minishell *m)
 	h = NULL;
 	while (*s)
 	{
-		if (*s == '$' && (ft_isalpha(*(s + 1))
-				|| *(s + 1) == '?' || *(s + 1) == '_'))
+		if (*s == '$' && (ft_isalpha(*(s + 1)) || *(s + 1) == '?' || *(s
+					+ 1) == '_'))
 		{
 			if (!ft_add_var(&h, &s, m))
 				return (NULL);

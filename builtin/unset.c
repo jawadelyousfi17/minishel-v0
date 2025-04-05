@@ -6,103 +6,104 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:32 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 17:49:33 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:00:58 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int ft_matrix_len(char **matrix)
+int	ft_matrix_len(char **matrix)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (matrix[i])
-        i++;
-    return i;
+	i = 0;
+	while (matrix[i])
+		i++;
+	return (i);
 }
 
-int ft_is_valid_identifier(char *s)
+int	ft_is_valid_identifier(char *s)
 {
-    if (!*s || !ft_strchr(VALID_START, *s))
-        return 0;
-    s++;
-    while (*s)
-    {
-        if (!ft_strchr(VALID, *s))
-            return 0;
-        s++;
-    }
-    return 1;
+	if (!*s || !ft_strchr(VALID_START, *s))
+		return (0);
+	s++;
+	while (*s)
+	{
+		if (!ft_strchr(VALID, *s))
+			return (0);
+		s++;
+	}
+	return (1);
 }
 
-int gb_hl_remove_var(char ***env, int index)
+int	gb_hl_remove_var(char ***env, int index)
 {
-    char **new_env;
-    int i;
-    int j;
+	char	**new_env;
+	int		i;
+	int		j;
 
-    j = 0;
-    i = 0;
-    new_env = ft_malloc(ft_matrix_len(*env) * sizeof(char *), NO_GB);
-    if (!new_env)
-        return 0;
-    while ((*env)[i])
-    {
-        if (i == index)
-        {
-            free((*env)[i]);
-            i++;
-            continue;
-        }
-        new_env[j++] = (*env)[i++];
-    }
-    new_env[j] = NULL;
-    free(*env);
-    *env = new_env;
-    return 1;
+	j = 0;
+	i = 0;
+	new_env = ft_malloc(ft_matrix_len(*env) * sizeof(char *), NO_GB);
+	if (!new_env)
+		return (0);
+	while ((*env)[i])
+	{
+		if (i == index)
+		{
+			free((*env)[i]);
+			i++;
+			continue ;
+		}
+		new_env[j++] = (*env)[i++];
+	}
+	new_env[j] = NULL;
+	free(*env);
+	*env = new_env;
+	return (1);
 }
 
-int hl_ft_unset(char *var_name, char ***env)
+int	hl_ft_unset(char *var_name, char ***env)
 {
-    int i;
+	int	i;
 
-    if (var_name == NULL)
-        return(er4(": unset: can't unset", NULL, NULL, NULL), 1);
-    if (!ft_is_valid_identifier(var_name))
-        return(er4(": unset: `", var_name , "': not a valid identifier", NULL), 1);
-    i = 0;
-    while ((*env)[i])
-    {
-        if (is_equal(ft_extract_var((*env)[i]), var_name))
-        {
-            if (!gb_hl_remove_var(env, i))
-            {
-               er4(": unset: ", strerror(errno), NULL, NULL);
-               er4(": unset: can't unset: `", var_name, "'", NULL);
-                return 1;
-            }
-            return 0;
-        }
-        i++;
-    }
-    return 0;   
+	if (var_name == NULL)
+		return (er4(": unset: can't unset", NULL, NULL, NULL), 1);
+	if (!ft_is_valid_identifier(var_name))
+		return (er4(": unset: `", var_name, "': not a valid identifier", NULL),
+			1);
+	i = 0;
+	while ((*env)[i])
+	{
+		if (is_equal(ft_extract_var((*env)[i]), var_name))
+		{
+			if (!gb_hl_remove_var(env, i))
+			{
+				er4(": unset: ", strerror(errno), NULL, NULL);
+				er4(": unset: can't unset: `", var_name, "'", NULL);
+				return (1);
+			}
+			return (0);
+		}
+		i++;
+	}
+	return (0);
 }
 
-int ft_unset(char **args, char ***env)
+int	ft_unset(char **args, char ***env)
 {
-    int i;
-    int err;
+	int	i;
+	int	err;
 
-    if (args == NULL)
-        return(er4(": unset: can't unset", NULL, NULL, NULL), 1);
-    i = 1;
-    err = 0;
-    while (args[i])
-    {
-        if (hl_ft_unset(args[i], env) != 0)
-            err = 1;
-        i++;
-    }
-    return err;
+	if (args == NULL)
+		return (er4(": unset: can't unset", NULL, NULL, NULL), 1);
+	i = 1;
+	err = 0;
+	while (args[i])
+	{
+		if (hl_ft_unset(args[i], env) != 0)
+			err = 1;
+		i++;
+	}
+	return (err);
 }
