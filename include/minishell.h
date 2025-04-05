@@ -113,6 +113,7 @@ void	handle_sigint(int sig);
 void	handle_quit(int signal);
 void heredoc_sig(int sig);
 int ft_perr_builtin(int err_code, char *arg);
+int ft_close_hd_utils(t_files **f);
 int ft_pwd(t_minishell *m);
 void	dup_and_close(int in, int out, int fd[2][2]);
 void redirection(t_data *data,t_minishell *m);

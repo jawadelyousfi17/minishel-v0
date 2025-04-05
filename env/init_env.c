@@ -34,6 +34,7 @@ char **ft_create_env()
     ft_set_env(&env, "PWD", ft_strdup(pwd, 0));
     free(pwd);
     ft_set_env(&env, "SHLVL", "1");
+    ft_set_env(&env,"OLDPWD", NULL);
     return env;
 }
 

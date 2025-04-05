@@ -10,5 +10,6 @@ char **ft_create_env();
 char *ft_extract_var(char *s);
 char *gb_get_env(char **env, char *var);
 char **gb_get_all_env(char **env);
-void ft_sort(char **env);
 size_t ft_max(size_t a, size_t b);
+int ft_matrix_len(char **matrix);
+char **ft_copy_export_env(char **env);

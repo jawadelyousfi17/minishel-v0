@@ -25,7 +25,7 @@ size_t ft_max(size_t a, size_t b)
     return a;
 }
 
-void ft_sort(char **env)
+void  ft_sort(char **env)
 {
     size_t i, j;
     char *temp;
@@ -46,4 +46,26 @@ void ft_sort(char **env)
         }
         i++;
     }
+}
+
+
+char **ft_copy_export_env(char **env)
+{
+    char **r;
+    int i;
+
+    i = 0;
+    r = ft_malloc(sizeof(char *) * (ft_matrix_len(env) + 1), GB_C);
+    if (!r)
+        return NULL;
+    while (env[i])
+    {
+        r[i] = ft_strdup(env[i], GB_C);
+        if (!r[i])
+            return NULL;
+        i++;
+    }
+    r[i] = NULL;
+    ft_sort(r);
+    return r;
 }

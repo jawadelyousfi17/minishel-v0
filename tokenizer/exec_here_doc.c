@@ -59,46 +59,50 @@ static int ft_read_to_fd(int fd, char *limiter, t_minishell *m, int is_qt)
  * return fd if success
  */
 
-
-
-static int execute_heredoc(char *limiter, int is_qt, t_minishell *m)
+int create_tmp_file(int fd[2])
 {
-    int fd;
-    int return_fd;
-    char *r;
     char *file_name;
-    int pid;
-    int exit_val;
 
     file_name = genrete_file_name();
     if (file_name == NULL)
         return -1;
-    fd = open(file_name, O_CREAT | O_RDWR, 0644);
-    if (fd < 0)
+    fd[0] = open(file_name, O_CREAT | O_RDWR, 0644);
+    if (fd[0] < 0)
         return -1;
-    return_fd = open(file_name, O_RDONLY, 0644);
-    if (return_fd < 0)
-        return (close(fd), -1);
+    fd[1] = open(file_name, O_RDONLY, 0644);
+    if (fd[1] < 0)
+        return (close(fd[0]), -1);
     if (unlink(file_name) == -1)
-        return (close(fd), close(return_fd), -1);
+        return (close(fd[0]), close(fd[1]), -1);
+    return 0;
+}
+
+static int execute_heredoc(char *limiter, int is_qt, t_minishell *m)
+{
+    int fd[2];
+    int pid;
+    int exit_val;
+
+    if (create_tmp_file(fd) == -1)
+        return -1;
     pid = fork();
     signal(SIGINT, SIG_IGN);
     if (pid == 0)
     {
         signal(SIGINT, &heredoc_sig);
-        if (!ft_read_to_fd(fd, limiter, m, is_qt))
+        if (!ft_read_to_fd(fd[0], limiter, m, is_qt))
             exit(1);
         exit(0);
     }
     waitpid(pid, &exit_val, 0);
     signal(SIGINT, handle_sigint);
-    close(fd);
+    close(fd[0]);
     if (WEXITSTATUS(exit_val) == 1)
     {
-        close(return_fd);
+        close(fd[1]);
         return -1;
     }
-    return return_fd;
+    return fd[1];
 }
 
 /**

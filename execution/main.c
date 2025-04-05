@@ -252,23 +252,6 @@ void exec_one(t_minishell *m)
     exec_non_builtin(m,cmd_path);
 }
 
-void ft_close_files(t_files **f)
-{
-    int i = 0;
-
-    if (f)
-    {
-        while (f[i])
-        {
-            if (f[i]->redirect_type == HERE_DOC)
-            {
-                close(f[i]->fd);
-            }
-            i++;
-        }
-    }
-}
-
 void process(t_minishell *m)
 {
     t_list *t = m->data->pipe_cmd;
@@ -279,13 +262,13 @@ void process(t_minishell *m)
     else
         exec_one(m);
     if (!m->data->pipe)
-        ft_close_files(m->data->files);
+        ft_close_hd_utils(m->data->files);
     else 
     {
         while (t)
         {
             data = (t_data *) t->content;
-            ft_close_files(data->files);
+            ft_close_hd_utils(data->files);
             t = t->next;
         }
     }
