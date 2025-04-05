@@ -5,7 +5,7 @@
  * To fix: change method name doing
  */
 
-static char *create_tmp()
+static char *genrete_file_name()
 {
     int i;
     char *file_path;
@@ -52,14 +52,25 @@ static int ft_read_to_fd(int fd, char *limiter, t_minishell *m, int is_qt)
     return 1;
 }
 
-static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishell *m)
+
+/**
+ *
+ * return -1 if fails
+ * return fd if success
+ */
+
+
+
+static int execute_heredoc(char *limiter, int is_qt, t_minishell *m)
 {
     int fd;
     int return_fd;
     char *r;
     char *file_name;
+    int pid;
+    int exit_val;
 
-    file_name = create_tmp();
+    file_name = genrete_file_name();
     if (file_name == NULL)
         return -1;
     fd = open(file_name, O_CREAT | O_RDWR, 0644);
@@ -70,12 +81,30 @@ static int execute_heredoc(char *file_path, char *limiter, int is_qt, t_minishel
         return (close(fd), -1);
     if (unlink(file_name) == -1)
         return (close(fd), close(return_fd), -1);
-    if (!ft_read_to_fd(fd, limiter, m, is_qt))
-        return (close(fd), close(return_fd), -1);
+    pid = fork();
+    signal(SIGINT, SIG_IGN);
+    if (pid == 0)
+    {
+        signal(SIGINT, &heredoc_sig);
+        if (!ft_read_to_fd(fd, limiter, m, is_qt))
+            exit(1);
+        exit(0);
+    }
+    waitpid(pid, &exit_val, 0);
+    signal(SIGINT, handle_sigint);
     close(fd);
+    if (WEXITSTATUS(exit_val) == 1)
+    {
+        close(return_fd);
+        return -1;
+    }
     return return_fd;
 }
 
+/**
+ * return 1 if success
+ * return 0 if fails
+ */
 int ft_execute_files(t_files **f, t_minishell *m)
 {
     int fd;
@@ -89,10 +118,7 @@ int ft_execute_files(t_files **f, t_minishell *m)
     {
         if (f[i]->redirect_type == HERE_DOC)
         {
-            file_path = create_tmp();
-            if (file_path == NULL)
-                return 0;
-            fd = execute_heredoc(file_path, f[i]->file, f[i]->is_quoted, m);
+            fd = execute_heredoc(f[i]->file, f[i]->is_quoted, m);
             f[i]->fd = fd;
             if (fd < 0)
                 return 0;
@@ -102,26 +128,26 @@ int ft_execute_files(t_files **f, t_minishell *m)
     return 1;
 }
 
+/**
+ * return 1 if success
+ * return 0 if fails
+ */
 int ft_execute_heredoc(t_data *d, t_minishell *m)
 {
     char *file_path;
     int fd;
     t_list *d1;
+    int return_code;
 
-    if (d->pipe)
+    if (!d->pipe)
+        return ft_execute_files(d->files, m);
+    d1 = d->pipe_cmd;
+    while (d1)
     {
-        d1 = d->pipe_cmd;
-        while (d1)
-        {
-            if (ft_execute_files(((t_data *)d1->content)->files, m) == 0)
-                return 0;
-            d1 = d1->next;
-        }
-    }
-    else
-    {
-        if (ft_execute_files(d->files, m) == 0)
+        return_code = ft_execute_files(((t_data *)d1->content)->files, m);
+        if (return_code == 0)
             return 0;
+        d1 = d1->next;
     }
     return 1;
 }

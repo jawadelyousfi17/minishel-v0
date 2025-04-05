@@ -9,7 +9,7 @@ static int ft_close_hd_utils(t_files **f)
     i = 0;
     while (f[i])
     {
-        if (f[i]->redirect_type == HERE_DOC && f[i]->fd != -1)
+        if (f[i]->redirect_type == HERE_DOC && f[i]->fd > 0)
         {
             if (close(f[i]->fd) == -1)
                 return (0);

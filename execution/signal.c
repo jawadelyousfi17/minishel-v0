@@ -42,3 +42,12 @@ void	child_minishell_handler(int sig)
 		change_exit_code(1, 1);
 	}
 }
+
+void heredoc_sig(int sig)
+{
+    if (sig == SIGINT)
+    {
+        write(1, "\n", 1);
+        exit(1);
+    }
+}

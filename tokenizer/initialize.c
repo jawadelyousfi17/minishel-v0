@@ -1,5 +1,9 @@
 #include "../include/minishell.h"
 
+/**
+ * to do : exit code in parse
+*/
+
 t_data *ft_initialize_data(char *line, t_minishell *m)
 {
     t_data *d;
@@ -24,6 +28,6 @@ t_data *ft_initialize_data(char *line, t_minishell *m)
     if (!d)
         return (er4("Error: ", strerror(errno), 0, 0), NULL);
     if (!ft_execute_heredoc(d, m))
-        return (ft_close_here_docs(d) ,er4("Error: ", strerror(errno), 0, 0), NULL);
+        return (ft_close_here_docs(d) , NULL);
     return (d);
 }
