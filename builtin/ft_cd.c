@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:21 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 17:49:22 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:46:48 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ int	nocwd_case(t_data *data, t_minishell *m)
 int	ft_cd(t_data *data, t_minishell *m)
 {
 	char	*cwd;
-	char	*tmp;
-	char	*tfree;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)

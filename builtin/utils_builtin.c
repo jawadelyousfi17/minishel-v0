@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:36 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 19:00:41 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:46:57 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	ft_is_start_with(char *src, char *target)
 {
-	size_t	len;
 	size_t	i;
 
 	i = 0;

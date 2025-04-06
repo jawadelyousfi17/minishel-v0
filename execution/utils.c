@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:51 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:13:52 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:45:50 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	*check_ifdir(char *exe, t_minishell *m)
 char	*check_exe(char *paths, char *exe, t_minishell *m)
 {
 	char	**tmp;
-	char	*str;
 
 	if (ft_strchr(exe, '/'))
 		return (free(paths), check_ifdir(exe, m));
@@ -77,7 +76,6 @@ char	*check_exe(char *paths, char *exe, t_minishell *m)
 
 char	*process_helper(t_data *data, t_minishell *m)
 {
-	int		i;
 	char	*paths;
 
 	m->flag = 1;

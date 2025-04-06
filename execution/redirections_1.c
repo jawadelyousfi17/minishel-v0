@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:04 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:34:44 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:41:43 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	redirect_output(t_data *data, int i, int fd_out)
 	}
 }
 
-void	redirection(t_data *data, t_minishell *m)
+void	redirection(t_data *data)
 {
 	int	fd_in;
 	int	i;

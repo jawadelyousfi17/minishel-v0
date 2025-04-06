@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:25 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:14:26 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:39:47 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	process(t_minishell *m)
 	}
 }
 
-t_minishell	*init_mini(char **env, char ***new_env)
+t_minishell	*init_mini(char ***new_env)
 {
 	t_minishell	*m;
 
@@ -99,6 +99,8 @@ int	main(int c, char **v, char **env)
 	t_minishell	*m;
 	char		**new_env;
 
+	(void)c;
+	(void)v;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 	{
 		printf("minishell only work in interractive mode\n");
@@ -111,7 +113,7 @@ int	main(int c, char **v, char **env)
 		exit(1);
 	}
 	rl_catch_signals = 0;
-	m = init_mini(env, &new_env);
+	m = init_mini(&new_env);
 	main_loop(m);
 	write(0, "\x1B[Fminishell>$ exit\n", 20);
 	ft_free_env(*(m->env));

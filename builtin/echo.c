@@ -6,13 +6,13 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:06 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 17:49:07 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:46:18 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	hl_set_env_echo(char *s, char ***env, char *new_line)
+int	hl_set_env_echo(char *s, char ***env)
 {
 	if (*s)
 	{
@@ -52,7 +52,7 @@ int	hl_gb_echo(char **s, char *new_line, int i, char ***env)
 		}
 		i++;
 	}
-	if (hl_set_env_echo(s[i - 1], env, new_line) == -1)
+	if (hl_set_env_echo(s[i - 1], env) == -1)
 		return (1);
 	if (printf("%s", new_line) == -1)
 	{

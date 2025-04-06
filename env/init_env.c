@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:48 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:59:17 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:47:06 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ char	**ft_free_env(char **env)
 char	**ft_create_env(void)
 {
 	char	**env;
-	char	*path;
 	char	*pwd;
 
 	env = ft_malloc(sizeof(char *) * 1, NO_GB);

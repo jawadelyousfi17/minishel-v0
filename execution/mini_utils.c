@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:19 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:35:55 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:45:34 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	builtin_exec_one(t_minishell *m)
 {
 	t_redirect	r;
 
-	r = redirection_builtins(m->data, m);
+	r = redirection_builtins(m->data);
 	if (r.in == -1)
 		return ;
 	if (!is_equal(m->data->cmd[0], "echo"))
@@ -63,7 +63,7 @@ void	exec_non_builtin(t_minishell *m, char *cmd_path)
 		ft_perr_builtin(3, "fork");
 	if (pid == 0)
 	{
-		redirection(m->data, m);
+		redirection(m->data);
 		if (!cmd_path)
 		{
 			if (m->flag == 1)
@@ -72,7 +72,7 @@ void	exec_non_builtin(t_minishell *m, char *cmd_path)
 		}
 		execve(cmd_path, m->data->cmd, *(m->env));
 		if (*cmd_path)
-			if_execve_failed(m->data, cmd_path, m);
+			if_execve_failed(cmd_path, m);
 		exit(m->exit_code);
 	}
 	waitpid(pid, &status, 0);
@@ -97,7 +97,6 @@ void	handle_signal(t_minishell *m)
 void	exec_one(t_minishell *m)
 {
 	char	*cmd_path;
-	int		status;
 
 	if (m->data->is_builtin)
 	{

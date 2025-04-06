@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:12 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 19:01:53 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:46:35 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	print_exported(char **sorted_env)
 int	ft_export_no_args(char **env)
 {
 	int		i;
-	char	*var_name;
-	char	*var_value;
 	char	**sorted_env;
 
 	sorted_env = ft_copy_export_env(env);

@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:09 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:14:10 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:40:23 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ void	if_not_found(t_data *data)
 	exit(127);
 }
 
-void	if_execve_failed(t_data *data, char *cmd, t_minishell *m)
+void	if_execve_failed(char *cmd, t_minishell *m)
 {
-	char	*str;
-
 	if (errno == ENOEXEC)
 	{
 		execve("/bin/sh", (char *[]){"/bin/sh", cmd, NULL}, *(m->env));

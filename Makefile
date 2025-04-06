@@ -1,7 +1,7 @@
 
 NAME= minishell
 
-FLAGS = #-fsanitize=address 
+FLAGS = -Wall -Werror -Wextra #-fsanitize=address 
 
 env_src = env/init_env.c env/utils_env.c env/get_env.c env/set_env.c
 builtin_src = builtin/echo.c builtin/env.c builtin/export.c builtin/export_no_args.c builtin/ft_cd.c builtin/ft_exit.c builtin/ft_pwd.c builtin/unset.c builtin/utils_builtin.c
