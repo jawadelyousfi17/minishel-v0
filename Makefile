@@ -21,16 +21,6 @@ readline = -lreadline -L ~/Desktop/readline/lib
 
 all : $(NAME)
 
-# test
-test_src = tests/test.c
-test_obj = $(test_src:.c=.o)
-test : $(test_obj) $(parser_objs) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
-	cc $(FLAGS)  $(parser_objs) $(test_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline)  -o test
-test/%.o : test/%.c include/minishell.h
-	cc $(FLAGS) -c $< $(rdl_include) -o $@
-# test
-
-
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
 	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
 
@@ -41,14 +31,14 @@ execution/%.o : execution/%.c include/minishell.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
 
 garbage_collector/%.o : garbage_collector/%.c include/minishell.h
+	cc $(FLAGS) -c $< -o $@
+builtin/%.o : builtin/%.c builtin/builtin.h include/minishell.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
-builtin/%.o : builtin/%.c include/minishell.h
-	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
-env/%.o : env/%.c include/minishell.h
-	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
+env/%.o : env/%.c env/env.h include/minishell.h
+	cc $(FLAGS) -c $< -o $@
 
-utils/%.o : utils/%.c include/minishell.h
-	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
+utils/%.o : utils/%.c utils/utils.h include/minishell.h
+	cc $(FLAGS) -c $< -o $@
 
 clean : 
 	rm -rf $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(test_obj)
