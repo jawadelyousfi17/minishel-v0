@@ -37,11 +37,11 @@ void	clear_bf_exit(t_minishell *m)
 
 int	__exit(t_data *data, t_minishell *m)
 {
-	clear_bf_exit(m);
 	if (data->cmd[1])
 		exit(ft_atoi(data->cmd[1], NULL));
 	else
 		exit(change_exit_code(0, 0));
+	clear_bf_exit(m);
 	return (0);
 }
 

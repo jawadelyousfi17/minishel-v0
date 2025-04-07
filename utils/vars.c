@@ -50,8 +50,10 @@ char	*ft_getenv(char *name, t_minishell *m)
 
 	if (is_equal(name, "?"))
 	{
-		fprintf(stderr , "is_first_pipe: %d\n", m->is_first_pipe);
-		var_val = ft_itoa(change_exit_code(0, !m->is_first_pipe), GB_C);
+		if (!m->is_first_pipe)
+			var_val = ft_itoa(0, GB_C);
+		else
+			var_val = ft_itoa(change_exit_code(0, 0), GB_C);
 		if (!var_val)
 			return (NULL);
 		return (var_val);
