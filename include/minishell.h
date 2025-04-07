@@ -55,8 +55,8 @@ t_token					*ft_tokenize_space(char **s);
 t_token					*ft_tokenize_redir_in(char **s);
 t_token					*ft_tokenize_redir_out(char **s);
 t_token					*ft_tokenize_variable(char **s);
-int						ft_handle_redirection_var(t_token *t, t_minishell *m);
-int						ft_handle_export_var(t_token *t, t_minishell *m);
+int						ft_handle_redirection_var(t_token *t, t_minishell *m, int is_first_pipe);
+int						ft_handle_export_var(t_token *t, t_minishell *m, int is_first_pipe);
 int						ft_expand_vars(t_token **head, t_token *t,
 							t_minishell *m);
 int						ft_expand_expand(t_token **head, t_token *t);
