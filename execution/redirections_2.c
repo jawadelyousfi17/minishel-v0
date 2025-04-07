@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:01 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:45:05 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:47:26 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int	redirect_out_builtin(t_data *data, int i, int fd_out)
 	{
 		close(fd_out);
 		if (data->files[i]->redirect_type == REDIRECT_OUTPUT)
-			fd_out = open(data->files[i]->file, O_CREAT | O_RDWR | O_TRUNC,
+			fd_out = open(data->files[i]->file, O_CREAT | O_WRONLY | O_TRUNC,
 					0644);
 		else
-			fd_out = open(data->files[i]->file, O_CREAT | O_RDWR | O_APPEND,
+			fd_out = open(data->files[i]->file, O_CREAT | O_WRONLY | O_APPEND,
 					0644);
 		if (fd_out < 0)
 			return (ft_error_builtin(data->files[i]->file), -1);
