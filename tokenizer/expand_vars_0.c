@@ -37,7 +37,7 @@ void	ft_handle_here_doc_var(t_token *t)
 	}
 }
 
-int	ft_handle_redirection_var(t_token *t, t_minishell *m, int is_first_pipe)
+int	ft_handle_redirection_var(t_token *t, t_minishell *m)
 {
 	while (t)
 	{
@@ -52,7 +52,7 @@ int	ft_handle_redirection_var(t_token *t, t_minishell *m, int is_first_pipe)
 				if (t->type == VAR)
 				{
 					t->type = TEXT;
-					t->value = ft_getenv(t->value + 1, m, is_first_pipe);
+					t->value = ft_getenv(t->value + 1, m);
 					if (!t->value)
 						return (0);
 				}
@@ -71,7 +71,7 @@ int	ft_is_txt_space(t_token *t, t_token *p)
 		&& check_valid_export(t->value));
 }
 
-int	ft_handle_export_var(t_token *t, t_minishell *m, int is_first_pipe)
+int	ft_handle_export_var(t_token *t, t_minishell *m)
 {
 	t_token	*p;
 
@@ -86,7 +86,7 @@ int	ft_handle_export_var(t_token *t, t_minishell *m, int is_first_pipe)
 				if (t->type == VAR)
 				{
 					t->type = TEXT;
-					t->value = ft_getenv(t->value + 1, m, is_first_pipe);
+					t->value = ft_getenv(t->value + 1, m);
 					if (!t->value)
 						return (0);
 				}
@@ -102,22 +102,18 @@ int	ft_handle_export_var(t_token *t, t_minishell *m, int is_first_pipe)
 
 int	ft_expand_vars(t_token **head, t_token *t, t_minishell *m)
 {
-	int is_first_pipe;
-
-	is_first_pipe = 0;
+	m->is_first_pipe = 1;
 	ft_handle_here_doc_var(t);
-	if (!ft_handle_redirection_var(t, m, is_first_pipe) || !ft_handle_export_var(t, m, is_first_pipe))
+	if (!ft_handle_redirection_var(t, m) || !ft_handle_export_var(t, m))
 		return (0);
 	while (t)
 	{
-		if (t->type == PIPE && !is_first_pipe)
-		{
-			is_first_pipe = 1;
-		}
+		if (t->type == PIPE && m->is_first_pipe)
+			m->is_first_pipe = 0;
 		if (t->type == VAR)
 		{
 			t->type = EXPAND;
-			t->value = ft_getenv(t->value + 1, m, !is_first_pipe);
+			t->value = ft_getenv(t->value + 1, m);
 			if (!t->value)
 				return (0);
 		}

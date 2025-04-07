@@ -33,7 +33,7 @@ int ft_handle_txt(char **s, t_list **h)
 	return (1);
 }
 
-int ft_handle_var(char **s, t_list **h, t_minishell *m, int is_firtst_pipe)
+int ft_handle_var(char **s, t_list **h, t_minishell *m)
 {
 	char *start;
 	char *r;
@@ -50,7 +50,7 @@ int ft_handle_var(char **s, t_list **h, t_minishell *m, int is_firtst_pipe)
 	var_name = ft_strndup(start, *s - start, GB_C);
 	if (!var_name)
 		return (0);
-	r = ft_getenv(var_name, m, is_firtst_pipe);
+	r = ft_getenv(var_name, m);
 	if (!r)
 		return (0);
 	n = ft_lstnew(r);
@@ -60,7 +60,7 @@ int ft_handle_var(char **s, t_list **h, t_minishell *m, int is_firtst_pipe)
 	return (1);
 }
 
-char *expand_quote(char *s, t_minishell *m, int is_first_pipe)
+char *expand_quote(char *s, t_minishell *m)
 {
 	t_list *head;
 
@@ -74,7 +74,7 @@ char *expand_quote(char *s, t_minishell *m, int is_first_pipe)
 	{
 		if (*s == '$' && (ft_isalpha(*(s + 1)) || *(s + 1) == '_' || *(s + 1) == '?'))
 		{
-			if (!ft_handle_var(&s, &head, m, is_first_pipe))
+			if (!ft_handle_var(&s, &head, m))
 				return (NULL);
 		}
 		else
@@ -88,16 +88,14 @@ char *expand_quote(char *s, t_minishell *m, int is_first_pipe)
 
 int ft_expand_quoted(t_token *t, t_minishell *m)
 {
-	int is_first_pipe;
-
-	is_first_pipe = 0;
+	m->is_first_pipe = 1;
 	while (t)
 	{
-		if (t->type == PIPE && !is_first_pipe)
-			is_first_pipe = 1;
+		if (t->type == PIPE && m->is_first_pipe)
+			m->is_first_pipe = 0;
 		if (t->type == D_QUOTE)
 		{
-			t->value = expand_quote(t->value, m, !is_first_pipe);
+			t->value = expand_quote(t->value, m);
 			if (!t->value)
 				return (0);
 			t->type = TEXT;

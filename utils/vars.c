@@ -43,14 +43,15 @@ int	change_exit_code(int e_code, int flag)
 	return (exit_code);
 }
 
-char	*ft_getenv(char *name, t_minishell *m, int is_first_pipe)
+char	*ft_getenv(char *name, t_minishell *m)
 {
 	char	*value;
 	char	*var_val;
 
 	if (is_equal(name, "?"))
 	{
-		var_val = ft_itoa(change_exit_code(0, !is_first_pipe), GB_C);
+		fprintf(stderr , "is_first_pipe: %d\n", m->is_first_pipe);
+		var_val = ft_itoa(change_exit_code(0, !m->is_first_pipe), GB_C);
 		if (!var_val)
 			return (NULL);
 		return (var_val);

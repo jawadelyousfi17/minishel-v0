@@ -29,7 +29,7 @@ int	ft_add_var(t_list **h, char **s, t_minishell *m)
 	var_name = ft_strndup(start, *s - start, GB_C);
 	if (!var_name)
 		return (0);
-	var_value = ft_getenv(var_name, m, 1);
+	var_value = ft_getenv(var_name, m);
 	if (!var_value)
 		return (0);
 	new = ft_lstnew(var_value);
