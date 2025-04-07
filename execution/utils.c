@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:51 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:45:50 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:07:39 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*check_exe_helper(char **tmp, char *exe, t_minishell *m)
 		str = ft_strjoin(str, exe, 0);
 		if (!str)
 			ft_perr(m);
-		if (!access(str, X_OK))
+		if (!access(str, F_OK))
 			return (str);
 		i++;
 	}

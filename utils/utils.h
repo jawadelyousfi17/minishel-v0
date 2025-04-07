@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:12:27 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 19:06:43 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/06 14:32:33 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef struct s_token
 	int				is_quoted;
 	int				is_ambs;
 	struct s_token	*next;
-	struct s_token	*prev;
 }					t_token;
 
 typedef struct s_files

@@ -6,13 +6,13 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:06 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:46:18 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:45:36 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	hl_set_env_echo(char *s, char ***env)
+int hl_set_env_echo(char *s, char ***env)
 {
 	if (*s)
 	{
@@ -33,7 +33,7 @@ int	hl_set_env_echo(char *s, char ***env)
 	return (1);
 }
 
-int	hl_gb_echo(char **s, char *new_line, int i, char ***env)
+int hl_gb_echo(char **s, char *new_line, int i, char ***env)
 {
 	while (s[i])
 	{
@@ -62,17 +62,32 @@ int	hl_gb_echo(char **s, char *new_line, int i, char ***env)
 	return (0);
 }
 
-int	ft_echo(char **s, char ***env)
+int check_if_n(char *s)
 {
-	size_t	i;
-	char	*new_line;
+	size_t i;
+
+	i = 1;
+	while (s[i] && s[i] == 'n')
+		i++;
+	if (i == ft_strlen(s))
+		return (1);
+	return (0);
+}
+
+int ft_echo(char **s, char ***env)
+{
+	size_t i;
+	char *new_line;
 
 	new_line = "\n";
 	i = 1;
-	if (is_equal(s[i], "-n"))
+	while (s[i] && s[i][0] == '-')
 	{
-		i++;
+		if (check_if_n(s[i]) == 1)
 		new_line = "";
+		else 
+			break ;
+		i++;
 	}
 	return (hl_gb_echo(s, new_line, i, env));
 }

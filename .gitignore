@@ -1,7 +1,0 @@
-*.o
-a.out
-minishell
-./test
-execution/*.o
-
-

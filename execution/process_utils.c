@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:09 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:40:23 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:48:59 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	if_execve_failed(char *cmd, t_minishell *m)
 		return ;
 	}
 	er4(cmd, ": ", strerror(errno), NULL);
+	if(errno == EACCES)
+		exit(126);
 	exit(127);
 }
 

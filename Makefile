@@ -1,7 +1,7 @@
 
 NAME= minishell
 
-FLAGS = -Wall -Werror -Wextra #-fsanitize=address 
+FLAGS = -Wall -Werror -Wextra 
 
 env_src = env/init_env.c env/utils_env.c env/get_env.c env/set_env.c
 builtin_src = builtin/echo.c builtin/env.c builtin/export.c builtin/export_no_args.c builtin/ft_cd.c builtin/ft_exit.c builtin/ft_pwd.c builtin/unset.c builtin/utils_builtin.c
@@ -24,17 +24,17 @@ all : $(NAME)
 $(NAME) : $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) 
 	cc $(FLAGS) $(parser_objs) $(executions_obj) $(gb_obj) $(builtin_obj) $(env_obj) $(utils_obj) $(readline) -o $(NAME)
 
-tokenizer/%.o : tokenizer/%.c include/minishell.h
+tokenizer/%.o : tokenizer/%.c include/minishell.h utils/utils.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
 
-execution/%.o : execution/%.c include/minishell.h
+execution/%.o : execution/%.c include/minishell.h utils/utils.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
 
-garbage_collector/%.o : garbage_collector/%.c include/minishell.h
+garbage_collector/%.o : garbage_collector/%.c include/minishell.h utils/utils.h
 	cc $(FLAGS) -c $< -o $@
-builtin/%.o : builtin/%.c builtin/builtin.h include/minishell.h
+builtin/%.o : builtin/%.c builtin/builtin.h include/minishell.h utils/utils.h
 	cc $(FLAGS) -c $< -I ~/Desktop/readline/include -o $@
-env/%.o : env/%.c env/env.h include/minishell.h
+env/%.o : env/%.c env/env.h include/minishell.h utils/utils.h
 	cc $(FLAGS) -c $< -o $@
 
 utils/%.o : utils/%.c utils/utils.h include/minishell.h
