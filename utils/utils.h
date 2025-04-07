@@ -131,7 +131,7 @@ int					ft_count_token(t_token *t, t_token_type type);
 t_token				*ft_add_token_current(t_token **tokens, t_token *current,
 						t_token *new);
 char				*genrete_file_name(void);
-char				*ft_getenv(char *name, t_minishell *m);
+char				*ft_getenv(char *name, t_minishell *m, int is_first_pipe);
 int					ft_is_operator(t_token *token);
 int					ft_is_op_space(t_token *token);
 void				ft_remove_double_spaces(t_token **tokens);
