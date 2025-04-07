@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:25 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 17:49:26 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:22:52 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,19 @@ void	clear_bf_exit(t_minishell *m)
 
 int	__exit(t_data *data, t_minishell *m)
 {
-	clear_bf_exit(m);
+	int ecode;
+
 	if (data->cmd[1])
-		exit(ft_atoi(data->cmd[1], NULL));
+	{
+		ecode = ft_atoi(data->cmd[1], NULL);
+		clear_bf_exit(m);
+		exit(ecode);
+	}
 	else
+	{
+		clear_bf_exit(m);
 		exit(change_exit_code(0, 0));
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:12:39 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:21:46 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:08:53 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	*ft_getenv(char *name, t_minishell *m)
 
 	if (is_equal(name, "?"))
 	{
-		fprintf(stderr , "is_first_pipe: %d\n", m->is_first_pipe);
 		var_val = ft_itoa(change_exit_code(0, !m->is_first_pipe), GB_C);
 		if (!var_val)
 			return (NULL);
