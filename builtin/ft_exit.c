@@ -37,7 +37,7 @@ void	clear_bf_exit(t_minishell *m)
 
 int	__exit(t_data *data, t_minishell *m)
 {
-	int ecode;
+	int	ecode;
 
 	if (data->cmd[1])
 	{

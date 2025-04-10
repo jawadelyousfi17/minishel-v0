@@ -12,11 +12,11 @@
 
 #include "../include/minishell.h"
 
-int ft_handle_txt(char **s, t_list **h)
+int	ft_handle_txt(char **s, t_list **h)
 {
-	char *start;
-	char *r;
-	t_list *n;
+	char	*start;
+	char	*r;
+	t_list	*n;
 
 	start = *s;
 	if (**s == '$')
@@ -33,12 +33,12 @@ int ft_handle_txt(char **s, t_list **h)
 	return (1);
 }
 
-int ft_handle_var(char **s, t_list **h, t_minishell *m)
+int	ft_handle_var(char **s, t_list **h, t_minishell *m)
 {
-	char *start;
-	char *r;
-	char *var_name;
-	t_list *n;
+	char	*start;
+	char	*r;
+	char	*var_name;
+	t_list	*n;
 
 	(*s)++;
 	start = *s;
@@ -60,9 +60,9 @@ int ft_handle_var(char **s, t_list **h, t_minishell *m)
 	return (1);
 }
 
-char *expand_quote(char *s, t_minishell *m)
+char	*expand_quote(char *s, t_minishell *m)
 {
-	t_list *head;
+	t_list	*head;
 
 	head = NULL;
 	s = ft_strtrim(s, "\"", GB_C);
@@ -72,7 +72,8 @@ char *expand_quote(char *s, t_minishell *m)
 		return (s);
 	while (*s)
 	{
-		if (*s == '$' && (ft_isalpha(*(s + 1)) || *(s + 1) == '_' || *(s + 1) == '?'))
+		if (*s == '$' && (ft_isalpha(*(s + 1))
+				|| *(s + 1) == '_' || *(s + 1) == '?'))
 		{
 			if (!ft_handle_var(&s, &head, m))
 				return (NULL);
@@ -86,7 +87,7 @@ char *expand_quote(char *s, t_minishell *m)
 	return (ft_join_list(head));
 }
 
-int ft_expand_quoted(t_token *t, t_minishell *m)
+int	ft_expand_quoted(t_token *t, t_minishell *m)
 {
 	m->is_first_pipe = 1;
 	while (t)

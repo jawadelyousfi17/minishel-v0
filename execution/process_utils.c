@@ -27,7 +27,7 @@ void	if_execve_failed(char *cmd, t_minishell *m)
 		return ;
 	}
 	er4(cmd, ": ", strerror(errno), NULL);
-	if(errno == EACCES)
+	if (errno == EACCES)
 		exit(126);
 	exit(127);
 }

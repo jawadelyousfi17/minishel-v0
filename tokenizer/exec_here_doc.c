@@ -109,7 +109,7 @@ int	ft_execute_heredoc(t_data *d, t_minishell *m)
 {
 	t_list	*d1;
 	int		return_code;
-	
+
 	m->is_first_pipe = 1;
 	if (!d->pipe)
 		return (ft_execute_files(d->files, m));
