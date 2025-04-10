@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:13 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:34:58 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:52:21 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ int	close_between_processes(int fd[2][2], int i)
 void	err_fork(int fd[2][2])
 {
 	ft_close(fd);
-	change_exit_code(3, 1);
-	er4("fork :", strerror(errno), NULL, NULL);
+	er4("fork : ", strerror(errno), NULL, NULL);
+	while (wait(NULL) >= 0)
+	{
+	}
+	change_exit_code(1, 1);
 }
 
 pid_t	loop_pipe(int fd[2][2], t_minishell *m, t_list *tmp, int i)

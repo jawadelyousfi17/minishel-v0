@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:19 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:45:34 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:48:48 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exec_non_builtin(t_minishell *m, char *cmd_path)
 
 	pid = fork();
 	if (pid < 0)
-		ft_perr_builtin(3, "fork");
+		ft_perr_builtin(1, "fork");
 	if (pid == 0)
 	{
 		redirection(m->data);
