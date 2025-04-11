@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:12:27 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/06 14:32:33 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:55:34 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include "../env/env.h"
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <termios.h>
 # include <unistd.h>
 # define GB_C 0

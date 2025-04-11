@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:31 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/06 14:33:16 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:54:01 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <errno.h>
-# include <limits.h>
 
 typedef struct s_redirect
 {
