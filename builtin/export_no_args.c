@@ -24,6 +24,17 @@ static char	*_ft_get_var_name(char *s)
 
 int	hl_set_env_export(char *var_name, char *var_value, char ***env)
 {
+	if (!var_value)
+	{
+		if (!gb_get_env(*env, var_name))
+		{
+			if (ft_set_env(env, var_name, NULL) == -1)
+				return (0);
+			return (1);
+		}
+		else
+			return (1);
+	}
 	if (ft_set_env(env, var_name, var_value) == -1)
 		return (0);
 	return (1);

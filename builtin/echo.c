@@ -35,28 +35,27 @@ int	hl_set_env_echo(char *s, char ***env)
 
 int	hl_gb_echo(char **s, char *new_line, int i, char ***env)
 {
+	char	*r;
+
+	r = NULL;
 	while (s[i])
 	{
-		if (printf("%s", s[i]) == -1)
-		{
-			er4("echo: can't write", NULL, NULL, NULL);
-			return (1);
-		}
+		r = ft_strjoin(r, s[i], GB_C);
 		if (s[i + 1])
-		{
-			if (printf(" ") == -1)
-			{
-				er4("echo: can't write", NULL, NULL, NULL);
-				return (1);
-			}
-		}
+			r = ft_strjoin(r, " ", GB_C);
 		i++;
 	}
 	if (hl_set_env_echo(s[i - 1], env) == -1)
 		return (1);
-	if (printf("%s", new_line) == -1)
+	r = ft_strjoin(r, new_line, GB_C);
+	if (!r)
 	{
-		er4("echo: can't write", NULL, NULL, NULL);
+		er4("echo: ", strerror(errno), NULL, NULL);
+		return (1);
+	}
+	if (write(1, r, ft_strlen(r)) < 0)
+	{
+		er4("echo: ", strerror(errno), NULL, NULL);
 		return (1);
 	}
 	return (0);
