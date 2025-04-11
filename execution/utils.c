@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:51 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/07 16:07:39 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:58:03 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,10 @@ char	*process_helper(t_data *data, t_minishell *m)
 	m->flag = 1;
 	if (!data->cmd)
 		return (ft_strdup("", 0));
-	if (!*(data->cmd)[0])
-		return (NULL);
 	paths = gb_get_env(*(m->env), "PATH");
 	if (!paths)
-	{
-		if (!data->cmd)
-			return (ft_strdup("", 0));
 		return (check_ifdir(data->cmd[0], m));
-	}
+	if (!*(data->cmd)[0])
+		return (NULL);
 	return (check_exe(paths, ft_strdup(data->cmd[0], 0), m));
 }
