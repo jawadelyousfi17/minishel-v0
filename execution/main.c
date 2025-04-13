@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:25 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/10 15:52:45 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:43:56 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	main_loop(t_minishell *m)
 		{
 			if (*input)
 				add_history(input);
+			signal(SIGINT, SIG_IGN);
 			m->data = ft_initialize_data(input, m);
 			if (!m->data)
 			{

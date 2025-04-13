@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:19 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/11 14:32:49 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:36:39 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void	handle_signal(t_minishell *m)
 {
 	if (m->data->cmd && ft_strnstr(m->data->cmd[0], "minishell",
 			ft_strlen(m->data->cmd[0])))
-		signal(SIGINT, &child_minishell_handler);
+		signal(SIGINT, child_minishell_handler);
 	else
 	{
-		signal(SIGINT, &child_handler);
-		signal(SIGQUIT, &handle_quit);
+		signal(SIGINT, child_handler);
+		signal(SIGQUIT, handle_quit);
 	}
 }
 
