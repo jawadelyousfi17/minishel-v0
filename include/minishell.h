@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:31 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/11 17:54:01 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:12:00 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_redirect
 {
 	int					in;
 	int					out;
+	int					err;
 }						t_redirect;
 
 # define NO_GB 2

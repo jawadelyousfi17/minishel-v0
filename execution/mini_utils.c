@@ -6,13 +6,13 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:19 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/13 17:36:39 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:13:46 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	exec_builtins(t_data *data, t_minishell *m)
+int exec_builtins(t_data *data, t_minishell *m)
 {
 	if (!ft_strncmp(data->cmd[0], "cd", 2))
 		return (ft_cd(data, m));
@@ -31,13 +31,22 @@ int	exec_builtins(t_data *data, t_minishell *m)
 	return (0);
 }
 
-void	builtin_exec_one(t_minishell *m)
+void builtin_exec_one(t_minishell *m)
 {
-	t_redirect	r;
+	t_redirect r;
+	r.err = 0;
 
 	r = redirection_builtins(m->data);
-	if (r.in == -1)
-		return ;
+	if (r.err == 1)
+	{
+		if (dup2(r.in, STDIN_FILENO) < 0)
+			ft_perr_builtin(1, "dup2");
+		close(r.in);
+		if (dup2(r.out, STDOUT_FILENO) < 0)
+			ft_perr_builtin(1, "dup2");
+		close(r.out);
+		return;
+	}
 	if (!is_equal(m->data->cmd[0], "echo"))
 	{
 		if (ft_set_env(m->env, "_", m->data->cmd[0]) < 0)
@@ -50,13 +59,13 @@ void	builtin_exec_one(t_minishell *m)
 	if (dup2(r.out, STDOUT_FILENO) < 0)
 		ft_perr_builtin(1, "dup2");
 	close(r.out);
-	return ;
+	return;
 }
 
-void	exec_non_builtin(t_minishell *m, char *cmd_path)
+void exec_non_builtin(t_minishell *m, char *cmd_path)
 {
-	int	pid;
-	int	status;
+	int pid;
+	int status;
 
 	pid = fork();
 	if (pid < 0)
@@ -82,10 +91,10 @@ void	exec_non_builtin(t_minishell *m, char *cmd_path)
 		change_exit_code(WEXITSTATUS(status), 1);
 }
 
-void	handle_signal(t_minishell *m)
+void handle_signal(t_minishell *m)
 {
 	if (m->data->cmd && ft_strnstr(m->data->cmd[0], "minishell",
-			ft_strlen(m->data->cmd[0])))
+								   ft_strlen(m->data->cmd[0])))
 		signal(SIGINT, child_minishell_handler);
 	else
 	{
@@ -94,14 +103,14 @@ void	handle_signal(t_minishell *m)
 	}
 }
 
-void	exec_one(t_minishell *m)
+void exec_one(t_minishell *m)
 {
-	char	*cmd_path;
+	char *cmd_path;
 
 	if (m->data->is_builtin)
 	{
 		builtin_exec_one(m);
-		return ;
+		return;
 	}
 	cmd_path = process_helper(m->data, m);
 	if (!cmd_path)

@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:01 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/07 20:47:26 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:45:13 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ t_redirect	ft_error_builtin(char *file)
 	else
 		perror("minishell");
 	change_exit_code(1, 1);
-	return ((t_redirect){-1, -1});
+	return ((t_redirect){-1, -1,1});
 }
 
 t_redirect	err_ambs_builtin(char *file)
 {
 	er4(file, ": ambiguous redirect", NULL, NULL);
 	change_exit_code(1, 1);
-	return ((t_redirect){-1, -1});
+	return ((t_redirect){-1, -1,1});
 }
 
 int	redirect_in_builtins(t_data *data, int i, int fd_in)
 {
 	if (data->files[i]->redirect_type == REDIRECT_INPUT)
 	{
-		close(fd_in);
+		
 		fd_in = open(data->files[i]->file, O_RDONLY);
 		if (fd_in < 0)
 			return (ft_error_builtin(data->files[i]->file), -1);
@@ -55,7 +55,6 @@ int	redirect_out_builtin(t_data *data, int i, int fd_out)
 	if (data->files[i]->redirect_type == REDIRECT_OUTPUT
 		|| data->files[i]->redirect_type == APPEND)
 	{
-		close(fd_out);
 		if (data->files[i]->redirect_type == REDIRECT_OUTPUT)
 			fd_out = open(data->files[i]->file, O_CREAT | O_WRONLY | O_TRUNC,
 					0644);
@@ -93,7 +92,7 @@ t_redirect	redirection_builtins(t_data *data)
 			return (err_ambs_builtin(data->files[i]->file));
 		if (redirect_in_builtins(data, i, fd_in) < 0
 			|| redirect_out_builtin(data, i, fd_out) < 0)
-			return ((t_redirect){-1, -1});
+			return (r.err = 1,r);
 		i++;
 	}
 	return (r);
