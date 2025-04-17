@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:31 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/14 20:12:00 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:46:33 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,5 @@ void					ft_exit_failure_pipe(void);
 void					*ft_malloc(size_t size, int flag);
 void					child_handler(int sig);
 void					child_minishell_handler(int sig);
+void					reset_terminal_files(t_redirect r);
 #endif

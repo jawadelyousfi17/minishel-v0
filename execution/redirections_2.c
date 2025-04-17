@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:14:01 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/14 21:45:13 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:20:58 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,20 @@ t_redirect	ft_error_builtin(char *file)
 	else
 		perror("minishell");
 	change_exit_code(1, 1);
-	return ((t_redirect){-1, -1,1});
+	return ((t_redirect){-1, -1, 1});
 }
 
-t_redirect	err_ambs_builtin(char *file)
+t_redirect	err_ambs_builtin(char *file, t_redirect r)
 {
 	er4(file, ": ambiguous redirect", NULL, NULL);
 	change_exit_code(1, 1);
-	return ((t_redirect){-1, -1,1});
+	return (r);
 }
 
 int	redirect_in_builtins(t_data *data, int i, int fd_in)
 {
 	if (data->files[i]->redirect_type == REDIRECT_INPUT)
 	{
-		
 		fd_in = open(data->files[i]->file, O_RDONLY);
 		if (fd_in < 0)
 			return (ft_error_builtin(data->files[i]->file), -1);
@@ -89,10 +88,10 @@ t_redirect	redirection_builtins(t_data *data)
 	while (data->files[i])
 	{
 		if (data->files[i]->is_ambs == 1)
-			return (err_ambs_builtin(data->files[i]->file));
+			return (r.err = 1, err_ambs_builtin(data->files[i]->file, r));
 		if (redirect_in_builtins(data, i, fd_in) < 0
 			|| redirect_out_builtin(data, i, fd_out) < 0)
-			return (r.err = 1,r);
+			return (r.err = 1, r);
 		i++;
 	}
 	return (r);

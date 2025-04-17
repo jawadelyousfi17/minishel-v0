@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:51 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/11 19:58:03 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:21:08 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,14 @@ char	*process_helper(t_data *data, t_minishell *m)
 	if (!*(data->cmd)[0])
 		return (NULL);
 	return (check_exe(paths, ft_strdup(data->cmd[0], 0), m));
+}
+
+void	reset_terminal_files(t_redirect r)
+{
+	if (dup2(r.in, STDIN_FILENO) < 0)
+		ft_perr_builtin(1, "dup2");
+	close(r.in);
+	if (dup2(r.out, STDOUT_FILENO) < 0)
+		ft_perr_builtin(1, "dup2");
+	close(r.out);
 }
