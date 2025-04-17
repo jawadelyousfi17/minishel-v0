@@ -8,7 +8,7 @@ builtin_src = builtin/echo.c builtin/env.c builtin/export.c builtin/export_no_ar
 parser_src = parser/execut_here_doc.c parser/init_data.c parser/expan_env_utils2.c parser/init_data_utils.c parser/expand_env.c parser/lexer.c parser/expand_env_utils.c parser/parser.c parser/expander.c parser/spliter.c parser/ft_count_tokens.c parser/utils_parser.c
 executions_src = execution/errors.c execution/main.c execution/mini_utils.c execution/pipe.c execution/pipe_utils.c execution/process_utils.c execution/redirections_1.c execution/redirections_2.c execution/signal.c execution/utils.c
 gb_src = garbage_collector/garbage_collector.c
-token = tokenizer/check_ambs.c tokenizer/check_syntax.c tokenizer/close_here_docs.c tokenizer/exec_here_doc.c tokenizer/expand_here_doc.c tokenizer/expand_quotes.c tokenizer/expand_vars_0.c tokenizer/expand_vars_1.c tokenizer/init_data.c tokenizer/initialize.c tokenizer/join_tokens.c tokenizer/tokenizer.c tokenizer/tokenizer_1.c tokenizer/tokenizer_2.c
+token = tokenizer/expand_vars_2.c tokenizer/check_ambs.c tokenizer/check_syntax.c tokenizer/close_here_docs.c tokenizer/exec_here_doc.c tokenizer/expand_here_doc.c tokenizer/expand_quotes.c tokenizer/expand_vars_0.c tokenizer/expand_vars_1.c tokenizer/init_data.c tokenizer/initialize.c tokenizer/join_tokens.c tokenizer/tokenizer.c tokenizer/tokenizer_1.c tokenizer/tokenizer_2.c
 utils = utils/error_log.c utils/linked_list.c utils/linked_list_1.c utils/string_0.c utils/string_1.c utils/string_2.c utils/string_3.c utils/string_4.c utils/tokens_0.c utils/tokens_1.c utils/valid_export.c utils/vars.c utils/ft_atoi.c
 
 parser_objs = $(token:.c=.o)

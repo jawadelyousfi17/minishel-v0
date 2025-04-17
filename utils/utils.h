@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:12:27 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/11 17:55:34 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:49:51 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,7 @@ void				ft_remove_double_spaces(t_token **tokens);
 int					check_valid_export(char *s);
 int					er4(char *s1, char *s2, char *s3, char *s4);
 int					ft_is_builtin(char *s);
+char				*_trim_leading(char *src, char *set, t_token *t);
+char				*_trim_tail(char *src, char *set);
+int					hande_redirect_expantion(t_token *t, int i, t_minishell *m);
 #endif

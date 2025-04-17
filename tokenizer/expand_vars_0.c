@@ -6,15 +6,15 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:04 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 18:13:05 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:53:05 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_handle_here_doc_var(t_token *t)
+void ft_handle_here_doc_var(t_token *t)
 {
-	t_token	*hd_t;
+	t_token *hd_t;
 
 	while (t)
 	{
@@ -37,12 +37,14 @@ void	ft_handle_here_doc_var(t_token *t)
 	}
 }
 
-int	ft_handle_redirection_var(t_token *t, t_minishell *m)
+int ft_handle_redirection_var(t_token *t, t_minishell *m)
 {
+	int i;
+
+	i = 0;
 	while (t)
 	{
-		if (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT
-			|| t->type == APPEND)
+		if (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT || t->type == APPEND)
 		{
 			t = t->next;
 			if (t->type == SPACES)
@@ -50,13 +52,10 @@ int	ft_handle_redirection_var(t_token *t, t_minishell *m)
 			while (t && !ft_is_op_space(t))
 			{
 				if (t->type == VAR)
-				{
-					t->type = TEXT;
-					t->value = ft_getenv(t->value + 1, m);
-					if (!t->value)
+					if (!hande_redirect_expantion(t, i, m))
 						return (0);
-				}
 				t = t->next;
+				i++;
 			}
 		}
 		if (t)
@@ -65,15 +64,14 @@ int	ft_handle_redirection_var(t_token *t, t_minishell *m)
 	return (1);
 }
 
-int	ft_is_txt_space(t_token *t, t_token *p)
+int ft_is_txt_space(t_token *t, t_token *p)
 {
-	return (t->type == TEXT && (!p || p->type == SPACES)
-		&& check_valid_export(t->value));
+	return (t->type == TEXT && (!p || p->type == SPACES) && check_valid_export(t->value));
 }
 
-int	ft_handle_export_var(t_token *t, t_minishell *m)
+int ft_handle_export_var(t_token *t, t_minishell *m)
 {
-	t_token	*p;
+	t_token *p;
 
 	p = NULL;
 	while (t)
@@ -100,7 +98,7 @@ int	ft_handle_export_var(t_token *t, t_minishell *m)
 	return (1);
 }
 
-int	ft_expand_vars(t_token **head, t_token *t, t_minishell *m)
+int ft_expand_vars(t_token **head, t_token *t, t_minishell *m)
 {
 	m->is_first_pipe = 1;
 	ft_handle_here_doc_var(t);

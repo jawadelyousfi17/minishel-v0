@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:12:39 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/07 19:27:38 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:49:59 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int	ft_is_operator(t_token *token)
 
 int	ft_is_op_space(t_token *t)
 {
+	if (!t)
+		return (0);
 	return (t->type == REDIRECT_INPUT || t->type == REDIRECT_OUTPUT
 		|| t->type == APPEND || t->type == PIPE || t->type == SPACES
 		|| t->type == HERE_DOC);
