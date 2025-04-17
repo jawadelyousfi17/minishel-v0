@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:12 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:46:35 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:42:21 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,19 @@ static char	*_ft_get_var_name(char *s)
 
 int	hl_set_env_export(char *var_name, char *var_value, char ***env)
 {
+	char	*res;
+
 	if (!var_value)
 	{
-		if (!gb_get_env(*env, var_name))
+		res = gb_get_env(*env, var_name);
+		if (!res)
 		{
 			if (ft_set_env(env, var_name, NULL) == -1)
 				return (0);
 			return (1);
 		}
 		else
-			return (1);
+			return (free(res), 1);
 	}
 	if (ft_set_env(env, var_name, var_value) == -1)
 		return (0);

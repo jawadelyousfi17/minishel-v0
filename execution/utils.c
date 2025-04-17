@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:13:51 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/17 16:21:08 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:47:13 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*process_helper(t_data *data, t_minishell *m)
 	if (!paths)
 		return (check_ifdir(data->cmd[0], m));
 	if (!*(data->cmd)[0])
-		return (NULL);
+		return (free(paths), NULL);
 	return (check_exe(paths, ft_strdup(data->cmd[0], 0), m));
 }
 

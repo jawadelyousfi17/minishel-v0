@@ -6,7 +6,7 @@
 /*   By: zbouchra <zbouchra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:49:21 by zbouchra          #+#    #+#             */
-/*   Updated: 2025/04/05 20:46:48 by zbouchra         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:49:52 by zbouchra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ int	home_case(t_minishell *m)
 	home = gb_get_env(*(m->env), "HOME");
 	if (!home)
 	{
-		er4(": cd: HOME not set", NULL, NULL, NULL);
+		er4("cd: HOME not set", NULL, NULL, NULL);
 		return (1);
 	}
 	if (chdir(home) < 0)
 	{
-		er4(": cd: ", home, ": ", strerror(errno));
+		er4("cd: ", home, ": ", strerror(errno));
 		return (free(home), 1);
 	}
 	if (ft_set_env(m->env, "OLDPWD", m->cwd) < 0)
-		return (perror("minishell"), 1);
+		return (free(home), perror("minishell"), 1);
 	free(m->cwd);
 	m->cwd = home;
 	if (ft_set_env(m->env, "PWD", m->cwd) < 0)
@@ -40,7 +40,7 @@ int	normal_case_arg(t_data *data, t_minishell *m)
 {
 	if (chdir(data->cmd[1]) < 0)
 	{
-		er4(": cd: ", data->cmd[1], ": ", strerror(errno));
+		er4("cd: ", data->cmd[1], ": ", strerror(errno));
 		return (1);
 	}
 	if (ft_set_env(m->env, "OLDPWD", m->cwd) < 0)
@@ -66,7 +66,7 @@ int	get_current_wd(t_minishell *m)
 	}
 	else
 	{
-		if (er4(": cd: error retrieving current directory:",
+		if (er4("cd: error retrieving current directory:",
 				" getcwd: cannot access parent directories:",
 				" No such file or directory", NULL) < 0)
 			return (1);
@@ -82,7 +82,7 @@ int	nocwd_case(t_data *data, t_minishell *m)
 
 	if (chdir(data->cmd[1]) < 0)
 	{
-		er4(": cd: ", strerror(errno), NULL, NULL);
+		er4("cd: ", strerror(errno), NULL, NULL);
 		return (1);
 	}
 	if (ft_set_env(m->env, "OLDPWD", m->cwd) < 0)
